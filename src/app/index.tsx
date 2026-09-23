@@ -1,98 +1,133 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import { Image } from 'expo-image';
+import { router } from 'expo-router';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
+export default function LoginScreen() {
+  function handleSignIn() {
+    // Entrada simulada: não autentica nem acessa a conta do Discord.
+    router.replace('/home');
   }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
-
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
-
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
+    <SafeAreaView style={styles.screen}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          <Image
+            source={require('@/assets/images/login/illustration.png')}
+            style={styles.illustration}
+            contentFit="contain"
+            accessible={false}
           />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+          <View style={styles.content}>
+            <Text style={styles.title} accessibilityRole="header">
+              Conecte-se{'\n'}e organize suas{'\n'}jogatinas
+            </Text>
+
+            <Text style={styles.description}>
+              Crie grupos para jogar seus games{'\n'}favoritos com seus amigos
+            </Text>
+
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Entrar com Discord"
+              accessibilityHint="Abre a Home em uma demonstração sem autenticação"
+              onPress={handleSignIn}
+              style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}>
+              <View style={styles.buttonIcon}>
+                <Image
+                  source={require('@/assets/images/login/discord.png')}
+                  style={styles.discordIcon}
+                  contentFit="contain"
+                  accessible={false}
+                />
+              </View>
+              <Text style={styles.buttonLabel}>Entrar com Discord</Text>
+            </Pressable>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: '#0D133D',
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 24,
+    paddingBottom: 56,
+  },
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    width: '100%',
+    maxWidth: 420,
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+  illustration: {
+    width: '100%',
+    aspectRatio: 375 / 360,
   },
-  heroSection: {
+  content: {
+    // Aproxima o título da ilustração, como na referência.
+    marginTop: -60,
+    paddingHorizontal: 24,
     alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
   },
   title: {
+    fontFamily: 'RajdhaniBold',
+    fontSize: 40,
+    lineHeight: 40,
+    color: '#DDE3F0',
     textAlign: 'center',
   },
-  code: {
-    textTransform: 'uppercase',
+  description: {
+    marginTop: 16,
+    fontFamily: 'Inter',
+    fontSize: 16,
+    lineHeight: 25,
+    color: '#DDE3F0',
+    textAlign: 'center',
   },
-  stepContainer: {
-    gap: Spacing.three,
+  button: {
     alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+    flexDirection: 'row',
+    alignItems: 'center',
+    minHeight: 56,
+    marginTop: 48,
+    marginHorizontal: 24,
+    backgroundColor: '#E91446',
+    borderRadius: 4,
+  },
+  buttonPressed: {
+    opacity: 0.75,
+  },
+  buttonIcon: {
+    width: 56,
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRightWidth: 1,
+    borderRightColor: '#C3133D',
+  },
+  discordIcon: {
+    width: 24,
+    height: 18,
+  },
+  buttonLabel: {
+    flex: 1,
+    paddingHorizontal: 8,
+    paddingVertical: 16,
+    fontFamily: 'Inter',
+    fontSize: 14,
+    lineHeight: 20,
+    color: '#FFFFFF',
+    textAlign: 'center',
   },
 });
