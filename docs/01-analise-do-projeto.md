@@ -4,7 +4,7 @@
 
 ## Contexto
 
-O projeto começou com o template do Expo. Embora o componente inicial se chamasse `HomeScreen`, ele apresentava “Welcome to Expo”; não era a Home do protótipo. A análise inicial não alterou arquivos. Depois foram implementados, em etapas separadas, Login e Home. Este documento preserva os achados iniciais e identifica a situação atual dos arquivos.
+O projeto começou com o template do Expo. Embora o componente inicial se chamasse `HomeScreen`, ele apresentava “Welcome to Expo”; não era a Home do protótipo. A análise inicial não alterou arquivos. Depois foram implementados, em etapas separadas, Login, Home, Detalhes e Agendar. Este documento preserva os achados iniciais e identifica a situação atual dos arquivos.
 
 ## Estrutura encontrada
 
@@ -16,7 +16,7 @@ src/
   constants/         Tema, fontes e espaçamentos
   hooks/             Hooks de tema
   global.css         Configuração de fontes para web
-assets/              Imagens e ícones; agora também assets de Login e Home
+assets/              Imagens e ícones; agora também assets de Login, Home e Detalhes
 referencias/         Dez imagens do protótipo
 scripts/             Script de reinicialização do template
 ```
@@ -57,6 +57,10 @@ O TypeScript está em modo estrito. O alias `@/` aponta para `src/`, e `@/assets
 | `src/app/home.tsx` | Inicialmente vazio; agora exibe saudação, categorias, partidas e filtro local |
 | `src/data/home.ts` | Dados simulados e tipos de usuário, categorias e partidas |
 | `category-card.tsx` e `appointment-card.tsx` | Cartões reutilizados nos itens das listas da Home |
+| `src/app/servidor/[id].tsx` | Detalhes; lê ID da rota, busca dados e renderiza banner, jogadores e ações |
+| `src/app/agendar.tsx` | Formulário com servidor fixo, seleção única, campos controlados e ajuste de teclado |
+| `src/data/servers.ts` | Seis servidores e grupo de jogadores simulados |
+| `screen-header.tsx` e `player-item.tsx` | Cabeçalho e linhas de jogadores de Detalhes |
 | `src/app/explore.tsx` | Demonstração preservada; continua sendo uma rota, sem acesso pela interface do Login |
 | `app-tabs.tsx` e `app-tabs.web.tsx` | Preservados, mas não utilizados pelo layout atual |
 | `themed-text.tsx` e `themed-view.tsx` | Componentes de tema preservados; podem ser avaliados nas próximas telas |
@@ -91,6 +95,6 @@ As imagens de Agendar representam estados da mesma tela, e não quatro telas dis
 
 Inicialmente, os assets eram apenas os do Expo. Para o Login foram adicionadas a ilustração e o ícone do projeto educacional original, além das fontes Rajdhani Bold e Inter. Origem e licenças estão em [assets/README.md](../assets/README.md).
 
-Para a Home foram adicionados ícones e imagens locais de demonstração; algumas capas e o avatar diferem dos recortes da referência. A quarta categoria, parcialmente cortada, foi identificada como Treino no projeto educacional original. Para Detalhes ainda será necessário definir os assets, como banner e avatares dos jogadores. Há pequenas diferenças entre as imagens de Agendar, como os rótulos “Horário” e “Hora e minuto”.
+Para a Home foram adicionados ícones e imagens locais de demonstração; algumas capas e o avatar diferem dos recortes da referência. A quarta categoria, parcialmente cortada, foi identificada como Treino no projeto educacional original. Detalhes usa o banner original de Lendários, reutiliza o avatar de Tiago e mostra iniciais para os outros dois jogadores. Há pequenas diferenças entre as imagens de Agendar, como os rótulos “Horário” e “Hora e minuto”.
 
-Também não foram definidos os destinos reais de “Entrar na partida” e compartilhar, nem se o agendamento deverá atualizar a Home ou sobreviver ao fechamento do aplicativo. Essas decisões não devem ser tratadas como funcionalidades já implementadas.
+“Entrar na partida” exibe uma confirmação de simulação. Compartilhar oferece nome e descrição ao sistema, sem link de convite. A integração real com Discord não foi implementada. Agendar foi limitado à interface e estado local: não atualiza a Home nem persiste dados. Reutiliza o logo de Valorant já existente, com servidor fixo e sem modal de seleção.

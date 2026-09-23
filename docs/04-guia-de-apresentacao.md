@@ -4,15 +4,17 @@
 
 ## Roteiro sugerido
 
-1. **Contexto:** “Este é um aplicativo acadêmico para organizar partidas. Já foram implementadas as telas de Login e Home, com dados simulados.”
-2. **Referência:** mostrar `referencias/tela-01-login.png` e explicar que textos e botão são componentes reais.
+1. **Contexto:** “Este é um aplicativo acadêmico para organizar partidas. As quatro telas estão implementadas com dados simulados e estado local.”
+2. **Referências:** mostrar `referencias/tela-01-login.png`, `referencias/tela-02-home.png` e `referencias/tela-2.1-home.png`; explicar que textos, botões e listas são componentes reais.
 3. **Estrutura:** abrir `src/app/index.tsx`, `_layout.tsx` e `home.tsx`.
 4. **JSX:** percorrer a árvore da tela, da área segura até o botão.
 5. **Estilos:** mostrar o Flexbox do contêiner e a linha formada por ícone e legenda.
 6. **Interação:** mostrar `onPress={handleSignIn}` e `router.replace('/home')`.
 7. **Home:** mostrar os dados em `src/data/home.ts`, os cartões reutilizados e as duas listas.
 8. **Estado:** explicar a seleção de categoria, o filtro das partidas e o total calculado.
-9. **Limites:** explicar que o Discord é simulado e que Agendar e Detalhes ainda não existem; suas ações permanecem desativadas.
+9. **Detalhes:** tocar em uma partida, explicar o ID na rota, os dados locais, a lista de jogadores e o retorno com `back`.
+10. **Agendar:** abrir pelo `+`, trocar a categoria e preencher dia, mês, hora, minuto e descrição. Explicar que as quatro referências são estados de uma rota.
+11. **Limites:** entrada na partida e agendamento são simulados; nada é salvo. O servidor do formulário é fixo e não existe modal. Algumas imagens diferem do protótipo.
 
 Antes de apresentar, executar o roteiro manual de [validação](./05-execucao-e-validacao.md). Não afirmar que houve teste em aparelho se essa etapa ainda não tiver sido feita.
 
@@ -24,7 +26,7 @@ Antes de apresentar, executar o roteiro manual de [validação](./05-execucao-e-
 
 ### Por que não criou um componente genérico de botão?
 
-Nesta etapa há apenas um botão desse tipo. Mantê-lo na tela facilita a leitura. A extração poderá ocorrer quando outra tela repetir o padrão ou quando melhorar claramente a organização.
+O botão com ícone Discord agora aparece no Login e em Detalhes, com ações diferentes. O asset é reutilizado, mas nesta etapa o código do Login foi preservado. Uma extração pequena pode ser avaliada depois; não foi criada uma API genérica com várias opções antecipadas.
 
 ### O que é JSX?
 
@@ -32,7 +34,7 @@ Nesta etapa há apenas um botão desse tipo. Mantê-lo na tela facilita a leitur
 
 ### Qual a diferença entre props e state?
 
-Props são informações recebidas pelo componente, como `source` e `onPress`. State guarda valores que podem mudar e provocar nova renderização. O Login não precisa de estado próprio com `useState`.
+Props são informações recebidas pelo componente, como `source` e `onPress`. State guarda valores que podem mudar e provocar nova renderização. O Login não precisa de estado próprio com `useState`; na Home, esse hook guarda a categoria selecionada. Em Detalhes, guarda a mensagem de simulação ou indisponibilidade do compartilhamento.
 
 ### De onde vem pressed?
 
@@ -66,9 +68,33 @@ A `FlatList` vertical exibe partidas; a horizontal exibe categorias. `data` forn
 
 A Home guarda `selectedCategoryId` em `useState`. `null` mostra todas as partidas; um identificador filtra com `filter`. Tocar na categoria já selecionada remove o filtro. Lista e total são calculados a partir desse estado, sem manter cópias em outros estados.
 
-### Por que o botão + e os cartões não navegam ainda?
+### Como os cartões e o + navegam?
 
-As telas de destino não foram implementadas. O `+` está desativado; `AppointmentCard` aceita um callback opcional com `serverId`, que será fornecido pela Home quando Detalhes existir. Isso evita abrir uma rota inválida.
+`AppointmentCard` comunica o `serverId` à Home pelo callback. A Home chama `router.navigate` para `/servidor/[id]`. Detalhes lê o ID com `useLocalSearchParams` e procura o servidor com `find`. O objeto inteiro não é colocado na URL. O `+` chama `router.navigate('/agendar')`; nesse caso não precisa passar parâmetros, pois o servidor é fixo.
+
+### Como Agendar garante somente uma categoria selecionada?
+
+Guarda um único ID em `useState`, inicialmente `null`. Cada cartão recebe `selected={selectedCategoryId === category.id}`. O callback substitui o ID pelo tocado; na nova renderização somente um cartão recebe o estilo selecionado. A Home usa o mesmo componente, mas fornece outro callback, que permite remover o filtro.
+
+### O que significa um campo controlado?
+
+O texto vem do estado por `value`, e `onChangeText` atualiza esse estado. Os campos numéricos são strings para preservar vazio e zeros à esquerda. `keyboardType="number-pad"` solicita teclado numérico, a expressão regular remove outros caracteres e `maxLength={2}` limita o tamanho. Isso não valida uma data real.
+
+### Como a descrição e o teclado são tratados?
+
+A descrição usa `multiline` e `maxLength={100}`. `KeyboardAvoidingView` ajusta o espaço quando o teclado abre; `ScrollView` permite alcançar campos e botão. O comportamento precisa ser conferido em Android e iOS. Agendar dispensa o teclado e mostra uma mensagem local, sem salvar dados.
+
+### Por que abrir Detalhes e Agendar com navigate?
+
+Para abrir o destino mantendo a Home na pilha e reutilizar a tela quando ela já estiver ativa. Na revisão, o teste isolado da pilha mostrou que dois `push` criavam duas telas; dois `navigate` mantiveram somente uma. O cabeçalho recebe `onBack` como prop e não conhece os endereços. Se não houver histórico, a tela usa `/home` como destino de retorno. O teste da pilha não substitui o teste de toque no aparelho.
+
+### O status dos jogadores muda em tempo real?
+
+Não. Os jogadores são dados locais e seus status são fixos. `PlayerItem` calcula rótulo e cor pela prop recebida; não precisa de estado próprio. A lista usa `FlatList` e calcula o total pelo tamanho do array.
+
+### O que faz Entrar na partida?
+
+Atualiza uma mensagem em `useState` explicando que a entrada é simulada. Não conecta ao Discord nem altera jogadores. Compartilhar usa a opção do sistema para nome e descrição; não cria um convite real.
 
 ### O que faz o arquivo _layout.tsx?
 
@@ -82,17 +108,17 @@ Para reduzir a troca visível entre a fonte padrão e a fonte escolhida. `useFon
 
 `margin` cria espaço externo ao elemento. `padding` cria espaço interno, entre o limite do elemento e seu conteúdo.
 
-### Como o Flexbox aparece nesta tela?
+### Como o Flexbox aparece nas telas?
 
-O conjunto usa coluna e centralização. O botão usa `flexDirection: 'row'` para posicionar ícone e texto lado a lado. A legenda usa `flex: 1` para ocupar o espaço restante.
+No Login, o conjunto usa coluna e centralização. O botão usa `flexDirection: 'row'` para posicionar ícone e texto lado a lado. Na Home, o cabeçalho e as partidas também usam linha; saudação e detalhes usam `flex: 1` para ocupar o espaço restante. Os metadados podem quebrar de linha com `flexWrap`.
 
 ### Por que a imagem não fica deformada?
 
 `aspectRatio` preserva a proporção do espaço da ilustração. `contentFit="contain"` mantém a imagem inteira dentro desse espaço.
 
-### Por que usar ScrollView e SafeAreaView?
+### Por que usar ScrollView, FlatList e SafeAreaView?
 
-A primeira permite rolar se faltar altura. A segunda respeita as áreas ocupadas pelo sistema. Ambas ajudam a adaptar a tela, mas não dispensam testes em diferentes aparelhos.
+A `ScrollView` do Login permite rolar se faltar altura. A Home usa `FlatList` para os itens repetidos e o cabeçalho. A `SafeAreaView` protege o conteúdo das áreas ocupadas pelo sistema em ambas as telas. Esses recursos não dispensam testes em diferentes aparelhos.
 
 ### Por que os arquivos são TypeScript se há poucas anotações de tipo?
 
@@ -100,7 +126,7 @@ O TypeScript consegue inferir muitos tipos, e os componentes das bibliotecas já
 
 ### De onde vieram as imagens e fontes?
 
-Os assets correspondentes ao Login vieram do repositório educacional original; as fontes vieram do Google Fonts. As origens e licenças estão registradas em `assets/README.md`. Os recursos são locais.
+Os assets do Login e os ícones da Home vieram do projeto educacional original. As fontes vieram do Google Fonts. A Home também utiliza capas e avatar de demonstração de outras fontes públicas; alguns diferem da referência. As origens estão registradas em `assets/README.md`, e as licenças das fontes acompanham seus arquivos. Os recursos são locais.
 
 ### O que foi testado?
 
@@ -113,4 +139,9 @@ Passaram a checagem de TypeScript e a exportação de bundles para Android, iOS 
 - [Home](../src/app/home.tsx): `useState`, filtro, listas e total calculado.
 - [Dados locais](../src/data/home.ts): tipos, identificadores e objetos simulados.
 - [Cartão de categoria](../src/components/category-card.tsx) e [cartão de partida](../src/components/appointment-card.tsx): props, callback e estilos condicionais.
-- [Plano](./02-plano-de-implementacao.md): o que será feito depois, especialmente o futuro estado de categorias.
+- [Detalhes](../src/app/servidor/[id].tsx): parâmetro, `find`, `FlatList`, feedback e retorno.
+- [Servidores](../src/data/servers.ts), [jogador](../src/components/player-item.tsx) e [cabeçalho](../src/components/screen-header.tsx): dados, props e responsabilidades.
+- [Explicação completa de Detalhes](./08-detalhes-do-servidor.md): decisões e roteiro manual.
+- [Agendar](../src/app/agendar.tsx) e [explicação da tela](./09-tela-agendar.md): seleção única, campos controlados, teclado, rolagem e limites da simulação.
+- [Revisão final](./10-revisao-final.md): correções, diferenças visuais, evidências e testes ainda pendentes.
+- [Plano](./02-plano-de-implementacao.md): decisões das quatro telas e revisão manual ainda pendente.

@@ -6,7 +6,7 @@
 
 A Home substitui o destino vazio do Login, seguindo [tela-02-home.png](../referencias/tela-02-home.png). Exibe avatar, saudação, mensagem, botão `+`, categorias horizontais e partidas agendadas. O Login, seu layout de navegação, suas fontes e suas imagens não foram alterados.
 
-Não foram implementados Detalhes, Agendar, autenticação, chamadas de API, persistência ou o modal da lista de servidores. Não foram instaladas dependências.
+Na etapa original da Home, Detalhes e Agendar não foram implementados. Nas etapas seguintes, os cards foram conectados a [Detalhes do servidor](./08-detalhes-do-servidor.md) e o `+` a [Agendar](./09-tela-agendar.md), sem alterar filtros ou estilos. Autenticação, chamadas de API, persistência e modal da lista de servidores continuam sem implementação. Não foram instaladas dependências.
 
 ## Arquivos
 
@@ -15,7 +15,7 @@ Não foram implementados Detalhes, Agendar, autenticação, chamadas de API, per
 | [home.tsx](../src/app/home.tsx) | Compor a Home, manter o filtro e renderizar as listas |
 | [data/home.ts](../src/data/home.ts) | Dados locais de usuário, categorias e partidas; tipos utilizados pelos componentes |
 | [category-card.tsx](../src/components/category-card.tsx) | Exibir cada categoria e comunicar o toque |
-| [appointment-card.tsx](../src/components/appointment-card.tsx) | Exibir cada partida e reservar um callback para detalhes |
+| [appointment-card.tsx](../src/components/appointment-card.tsx) | Exibir cada partida e comunicar seu `serverId` pelo callback |
 | [assets/images/home](../assets/images/home) | Treze arquivos de imagens e ícones locais |
 | [assets/README.md](../assets/README.md) | Origens e diferenças dos assets em relação à referência |
 | [docs/README.md](./README.md) | Índice e situação atualizados |
@@ -30,7 +30,7 @@ Somente os dois tipos de cartões foram extraídos. Eles se repetem nas listas e
 `appointments` contém seis partidas. Cada uma possui:
 
 - `id`: identificador único da partida, usado pela lista.
-- `serverId`: identificador reservado para a futura navegação ao servidor.
+- `serverId`: identificador usado na navegação ao servidor.
 - `title`: nome exibido.
 - `categoryId`: ligação com a categoria.
 - `date` e `time`: textos de data e horário de demonstração.
@@ -50,8 +50,12 @@ Os dados não são eventos reais nem mudam com a data do aparelho. A sexta parti
 | `category` | `Category` | Nome e imagem do cartão |
 | `selected` | `boolean` | Aplica a borda e o fundo selecionados |
 | `onPress` | `() => void` | Comunica que o usuário tocou na categoria |
+| `accessibilityHint` | `string`, opcional | Explica a ação para leitores de tela; mantém por padrão a instrução do filtro da Home |
+| `showSelectionIndicator` | `boolean`, opcional | Mostra o marcador usado em Agendar; é `false` por padrão, preservando o visual da Home |
 
 O cartão não possui estado próprio. Ele recebe a seleção da Home e chama uma função quando é tocado. O `Pressable` fornece `pressed`, utilizado para reduzir a opacidade enquanto o toque ocorre. `accessibilityState` informa a seleção aos leitores de tela.
+
+Agendar reutiliza esse cartão com um callback de seleção única e uma instrução de acessibilidade específica. Essa adaptação não altera o comportamento do filtro na Home.
 
 ### AppointmentCard
 
@@ -59,9 +63,9 @@ O cartão não possui estado próprio. Ele recebe a seleção da Home e chama um
 | --- | --- | --- |
 | `appointment` | `Appointment` | Dados da partida |
 | `categoryLabel` | `string` | Nome da categoria para a linha da partida |
-| `onPress` | `(serverId: string) => void`, opcional | Futuro evento para abrir Detalhes |
+| `onPress` | `(serverId: string) => void`, opcional | Evento para abrir Detalhes |
 
-O `?` no tipo indica uma prop opcional. A Home ainda não envia `onPress`, então o cartão fica desativado. Quando essa função existir, o cartão passará `appointment.serverId` ao chamá-la. A chamada `onPress?.(...)` só executa a função se ela estiver definida.
+O `?` no tipo indica uma prop opcional. A Home agora envia `handleOpenServer` como `onPress`, ativando o cartão. O cartão passa `appointment.serverId` ao chamar a função. A chamada `onPress?.(...)` só executa a função se ela estiver definida; o componente continua podendo ser usado sem callback, ficando desativado nesse caso.
 
 `isHost` determina o texto Anfitrião/Visitante e a cor vermelha/verde. O ícone de pessoa recebe a mesma cor por `tintColor`. Não é necessário manter essas informações em estado: elas são calculadas a partir das props.
 
@@ -117,15 +121,15 @@ Cada componente mantém seu `StyleSheet.create` no próprio arquivo.
 
 O uso de alturas mínimas e quebra de linha favorece textos maiores sem esconder dados. O ajuste visual exato ainda exige conferência no aparelho. O fundo e os cartões usam cores sólidas; os próprios SVGs possuem os detalhes gráficos das categorias.
 
-## Navegação preparada, ainda inativa
+## Navegação atual
 
 O Login continua usando `router.replace('/home')`; agora o destino contém a interface.
 
-O `+` está desativado. Há um comentário no local indicando o futuro `router.push('/agendar')`, que só deverá ser conectado quando a rota existir.
+O `+` está ativo e chama `router.navigate('/agendar')`. O formulário usa somente estado local; ele não acrescenta partidas a esta lista.
 
-Cada partida possui `serverId`, e `AppointmentCard` já aceita `onPress(serverId)`. A Home contém o ponto de integração comentado para a futura rota `/servidor/[id]`. Não foram criados arquivos vazios para Agendar ou Detalhes e não há navegação para endereços inexistentes.
+Cada partida possui `serverId`, e `AppointmentCard` aceita `onPress(serverId)`. A Home fornece `handleOpenServer`, que chama `router.navigate({ pathname: '/servidor/[id]', params: { id: serverId } })`. A rota recupera o servidor nos dados locais; a Home permanece na pilha para o retorno, incluindo seu filtro. Nenhum objeto completo é passado na rota. A revisão substituiu `push` por `navigate` para não duplicar o destino em aberturas repetidas.
 
-As ações desativadas preservam o visual, mas também informam `disabled` na acessibilidade. Não há alertas ou modais temporários.
+As duas ações da Home agora têm destinos implementados. O componente `AppointmentCard` não precisou ser alterado para conectar Detalhes. A abertura de Agendar também preserva a Home na pilha e mantém seu filtro ao voltar.
 
 ## O que explicar ao professor
 
@@ -136,7 +140,7 @@ As ações desativadas preservam o visual, mas também informam `disabled` na ac
 5. Por que a lista filtrada e o total são calculados, sem duplicar estado.
 6. Como `isHost` controla texto e cor sem um novo hook.
 7. Como linha, coluna, `flex`, `gap` e quebra de linha organizam a interface.
-8. Por que a navegação de futuras telas está desativada nesta etapa.
+8. Como o callback leva o ID até o Router e como o `+` abre a rota Agendar.
 
 ## Validação da implementação
 
@@ -154,7 +158,8 @@ As ações desativadas preservam o visual, mas também informam `disabled` na ac
 - [ ] Tocar novamente na seleção atual e conferir o retorno das seis partidas.
 - [ ] Rolar a lista vertical até a última partida.
 - [ ] Conferir os rótulos e cores de Anfitrião e Visitante.
-- [ ] Conferir que `+` e partidas não tentam abrir telas ainda inexistentes.
+- [ ] Conferir que as partidas abrem o servidor correto e que voltar preserva o filtro.
+- [ ] Conferir que `+` abre Agendar e que voltar preserva o filtro da Home.
 - [ ] Conferir fontes, imagens, ícones, áreas seguras e textos em tela pequena.
 - [ ] Conferir que o Login manteve sua aparência e seu comportamento.
 

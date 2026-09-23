@@ -23,3 +23,10 @@ Todos os arquivos abaixo ficam em `images/home/` e são carregados localmente:
 O avatar e algumas capas são alternativas de demonstração, diferentes dos recortes exatos da referência. Valorant usa o logo, não a arte de personagens da imagem original. A sexta partida usa World of Warcraft como dado fictício, pois seu conteúdo não aparece na captura da Home. Essas imagens não representam dados de uma conta Discord real.
 
 Os arquivos SVG são imagens exibidas pelo `expo-image` já instalado; não foi adicionado transformador SVG nem biblioteca de ícones. Fontes e imagens do Login foram preservadas. A autoria das marcas e artes dos jogos pertence aos seus respectivos titulares; este registro de origem não altera suas licenças.
+
+## Detalhes do servidor
+
+- `images/servers/banner.png`: banner do [projeto educacional GamePlay / NLW 06](https://github.com/rocketseat-education/nlw-06-react-native/blob/master/src/assets/banner.png), correspondente à arte de Lendários na referência.
+- Os demais servidores reutilizam as capas da Home como imagens de demonstração. Não há referências individuais de Detalhes para eles.
+- O avatar de Tiago reutiliza `images/home/avatar.png`. Rodrigo e Diego usam iniciais em vez das fotos da captura, que não estavam disponíveis localmente. Não são contas conectadas ao Discord.
+- O botão reutiliza `images/login/discord.png`. Voltar e compartilhar usam `expo-symbols`, que já fazia parte das dependências.

@@ -1,4 +1,5 @@
 import { Image } from 'expo-image';
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -17,6 +18,10 @@ export default function HomeScreen() {
   function handleSelectCategory(categoryId: CategoryId) {
     // Tocar novamente na mesma categoria remove o filtro.
     setSelectedCategoryId((current) => current === categoryId ? null : categoryId);
+  }
+
+  function handleOpenServer(serverId: string) {
+    router.navigate({ pathname: '/servidor/[id]', params: { id: serverId } });
   }
 
   return (
@@ -38,12 +43,10 @@ export default function HomeScreen() {
                 <Text style={styles.message}>{user.message}</Text>
               </View>
 
-              {/* Ao criar Agendar, ativar e conectar onPress a router.push('/agendar'). */}
               <Pressable
-                disabled
+                onPress={() => router.navigate('/agendar')}
                 accessibilityRole="button"
                 accessibilityLabel="Agendar partida"
-                accessibilityState={{ disabled: true }}
                 style={styles.addButton}>
                 <Text style={styles.addIcon}>+</Text>
               </Pressable>
@@ -72,10 +75,10 @@ export default function HomeScreen() {
           </View>
         }
         renderItem={({ item }) => (
-          // Ao criar Detalhes, passar onPress para navegar a /servidor/[id] com serverId.
           <AppointmentCard
             appointment={item}
             categoryLabel={categories.find((category) => category.id === item.categoryId)?.matchLabel ?? ''}
+            onPress={handleOpenServer}
           />
         )}
         ListEmptyComponent={<Text style={styles.empty}>Nenhuma partida nesta categoria.</Text>}

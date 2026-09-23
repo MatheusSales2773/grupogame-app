@@ -164,7 +164,7 @@ Um `useEffect` observa `[fontsLoaded, fontError]` e chama `SplashScreen.hide()` 
 ## Limites desta etapa
 
 - Não existe autenticação Discord, token ou sessão.
-- A Home está implementada; Detalhes e Agendar continuam pendentes.
+- Home, Detalhes e Agendar estão implementados. O código do Login foi preservado nessas etapas.
 - A splash nativa e os ícones do aplicativo mantêm a configuração do template.
 - A compilação foi validada, mas o visual e o toque ainda precisam de conferência manual.
 

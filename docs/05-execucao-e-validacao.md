@@ -18,7 +18,7 @@ npm run web
 
 Também existem `npm run android` e `npm run ios`, que iniciam o Expo para essas plataformas e dependem de um ambiente compatível. Não é necessário executar o script `reset-project`.
 
-A instalação das dependências existentes em uma nova cópia pode ser feita com `npm ci`, usando o `package-lock.json`. Nenhuma instalação de dependências foi necessária para implementar Login ou Home nesta cópia.
+A instalação das dependências existentes em uma nova cópia pode ser feita com `npm ci`, usando o `package-lock.json`. Nenhuma instalação de dependências foi necessária para implementar Login, Home, Detalhes ou Agendar nesta cópia.
 
 ## Checagem de TypeScript
 
@@ -74,6 +74,69 @@ As verificações abaixo foram realizadas ao implementar a segunda tela; não fo
 
 A exportação utilizou `npx expo export --platform all --output-dir "$env:TEMP\grupogame-home-check"`, no PowerShell, com saída temporária fora do repositório. Não havia navegador conectado para a conferência visual. Os resultados completos e o roteiro manual da Home estão em [Tela Home explicada](./06-tela-home.md).
 
+## Registro da validação de Detalhes do servidor
+
+| Verificação | Resultado |
+| --- | --- |
+| `npx.cmd tsc --noEmit --incremental false` | Passou |
+| Exportação de bundles Android, iOS e web | Passou |
+| Rotas web dos seis servidores simulados | Geradas na exportação estática |
+| Correspondência entre partidas e servidores, IDs e assets | Seis correspondências válidas; sem IDs duplicados ou assets ausentes |
+| Conteúdo dos seis arquivos HTML exportados | Cada página contém o nome correto e o botão principal |
+| Links locais em `docs/` e `assets/README.md` | 73 destinos conferidos, sem arquivos ausentes |
+| Hashes de Login, layout, dados e cartões da Home, `package.json` | Preservados |
+| Mudanças em `home.tsx` | Restritas ao import do Router, handler e prop de navegação |
+| `git diff --check` | Sem erros de whitespace; avisos LF/CRLF |
+| `npx.cmd expo lint` | Interrompido: ESLint não configurado; recusada instalação/configuração |
+| Conferência visual e testes de toque | Pendentes; nenhum navegador ou aparelho conectado disponível |
+
+O primeiro comando `npx` foi recusado pela política de scripts do PowerShell. Utilizar `npx.cmd` permitiu executar as ferramentas sem mudar a política do sistema. A checagem inicial também identificou o nome antigo `StyleSheet.absoluteFillObject`; o código foi ajustado para `StyleSheet.absoluteFill`, disponível no React Native 0.86, e a verificação passou.
+
+```powershell
+npx.cmd tsc --noEmit --incremental false
+npx.cmd expo export --platform all --output-dir "$env:TEMP\grupogame-details-check"
+```
+
+A exportação usou execução autorizada fora do sandbox para o compilador Hermes, com saída temporária. Nenhum build foi publicado nem instalado em dispositivo. A tentativa de lint cumpriu a verificação prevista em `AGENTS.md`, mas a análise do ESLint não foi concluída: sua configuração continua adiada conforme orientação do trabalho.
+
+O roteiro de IDs, retorno, simulação, compartilhamento e telas pequenas está em [Detalhes do servidor](./08-detalhes-do-servidor.md). Os testes manuais continuam pendentes.
+
+## Registro da validação de Agendar
+
+| Verificação | Resultado |
+| --- | --- |
+| `npx.cmd tsc --noEmit --incremental false` | Passou |
+| Exportação de bundles Android, iOS e web | Passou; 13 rotas estáticas, incluindo `/agendar` |
+| Hashes de Login, Detalhes, layout, cabeçalho, jogador, cartão de partida, dados e dependências | Dez arquivos preservados |
+| Alteração no `CategoryCard` | Somente prop opcional de acessibilidade, com padrão anterior mantido |
+| Alteração na Home nesta etapa | Ativação do `+` com destino `/agendar` |
+| HTML exportado de `/agendar` | Contém servidor, quatro campos numéricos e uma área de descrição |
+| Links locais da documentação | 89 destinos válidos |
+| `git diff --check` | Sem erros de whitespace; avisos LF/CRLF |
+| `npx.cmd expo lint` | Não concluiu: configuração ausente; recusada instalação/configuração |
+| Execução visual, seleção, digitação e teclado em aparelho | Pendentes; nenhum navegador conectado disponível |
+
+Comandos utilizados no PowerShell:
+
+```powershell
+npx.cmd tsc --noEmit --incremental false
+npx.cmd expo export --platform all --output-dir "$env:TEMP\grupogame-schedule-check"
+```
+
+A exportação foi autorizada fora do sandbox para execução do Hermes e gravou somente em pasta temporária. Não houve publicação ou instalação em aparelho. A configuração de ESLint permaneceu adiada. Os testes de teclado não podem ser considerados concluídos pela checagem de tipos ou geração dos bundles.
+
+O roteiro de categorias, campos, limite de descrição, teclado, rolagem, retorno e simulação está em [Tela Agendar](./09-tela-agendar.md).
+
+## Revisão final das quatro telas
+
+Após os ajustes, passaram `npx.cmd tsc --noEmit --incremental false --noUnusedLocals --noUnusedParameters` e a exportação Android/iOS/web para `$env:TEMP\grupogame-final-review`. Foram geradas 13 rotas, com os nove endereços principais conferidos no HTML. Imports e assets locais, IDs e correspondências entre partidas/servidores também passaram.
+
+O teste isolado da implementação real de `StackRouter` reproduziu duplicação com duas ações `PUSH`. Com `NAVIGATE`, Detalhes e Agendar mantiveram somente um destino; voltar preservou a chave da Home. A Home foi ajustada para usar `router.navigate`. O caso de acesso direto sem histórico também foi conferido isoladamente.
+
+A revisão acrescentou o marcador de seleção de categorias somente em Agendar. Não houve alteração de Login, Detalhes, configuração ou dependências. ESLint permaneceu sem configuração; sua instalação foi recusada. A exportação emitiu somente aviso de cores do ambiente, sem warning de React Native observado nessa etapa.
+
+Não houve navegador/aparelho conectado. Não foram executados testes por toque, digitação, rolagem ou teclado em uma interface renderizada, nem comparação de screenshots do aplicativo. Os resultados, diferenças visuais e limitações estão em [Revisão final](./10-revisao-final.md).
+
 ## Roteiro manual pendente — Login e transição para Home
 
 - [ ] Abrir o aplicativo e confirmar que o Login é a tela inicial.
@@ -87,7 +150,7 @@ A exportação utilizou `npx expo export --platform all --output-dir "$env:TEMP\
 - [ ] Soltar o botão e confirmar a navegação para `/home`.
 - [ ] Confirmar que o destino mostra a Home com saudação, categorias e seis partidas, sem erro de rota inexistente.
 - [ ] Confirmar que não é aberto login externo do Discord.
-- [ ] Executar também o roteiro de filtros, listas e ações desativadas em [Tela Home explicada](./06-tela-home.md).
+- [ ] Executar também os roteiros de [Home](./06-tela-home.md), [Detalhes](./08-detalhes-do-servidor.md) e [Agendar](./09-tela-agendar.md).
 
 Para voltar a observar o Login na web após a navegação, abrir a URL raiz `/` diretamente. Como a entrada usa `replace`, o Login não é mantido como tela anterior dessa navegação. Para uma nova demonstração no aplicativo nativo, reabrir a rota inicial.
 
