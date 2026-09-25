@@ -14,7 +14,7 @@
 8. **Estado:** explicar a seleção de categoria, o filtro das partidas e o total calculado.
 9. **Detalhes:** tocar em uma partida, explicar o ID na rota, os dados locais, a lista de jogadores e o retorno com `back`.
 10. **Agendar:** abrir pelo `+`, trocar a categoria e preencher dia, mês, hora, minuto e descrição. Explicar que as quatro referências são estados de uma rota.
-11. **Limites:** entrada na partida e agendamento são simulados; nada é salvo. O servidor do formulário é fixo e não existe modal. Algumas imagens diferem do protótipo.
+11. **Servidor e limites:** tocar no bloco abaixo das categorias abre a lista; escolher um grupo atualiza seu ID no estado e fecha o modal. Entrada na partida e agendamento são simulados; nada é salvo. Algumas imagens diferem do protótipo.
 
 Antes de apresentar, executar o roteiro manual de [validação](./05-execucao-e-validacao.md). Não afirmar que houve teste em aparelho se essa etapa ainda não tiver sido feita.
 
@@ -70,7 +70,7 @@ A Home guarda `selectedCategoryId` em `useState`. `null` mostra todas as partida
 
 ### Como os cartões e o + navegam?
 
-`AppointmentCard` comunica o `serverId` à Home pelo callback. A Home chama `router.navigate` para `/servidor/[id]`. Detalhes lê o ID com `useLocalSearchParams` e procura o servidor com `find`. O objeto inteiro não é colocado na URL. O `+` chama `router.navigate('/agendar')`; nesse caso não precisa passar parâmetros, pois o servidor é fixo.
+`AppointmentCard` comunica o `serverId` à Home pelo callback. A Home chama `router.navigate` para `/servidor/[id]`. Detalhes lê o ID com `useLocalSearchParams` e procura o servidor com `find`. O objeto inteiro não é colocado na URL. O `+` chama `router.navigate('/agendar')` sem parâmetros; nessa tela o servidor é escolhido pelo modal e seu ID fica no estado local. Veja [Seleção de servidor](./13-selecao-de-servidor.md).
 
 ### Como Agendar garante somente uma categoria selecionada?
 

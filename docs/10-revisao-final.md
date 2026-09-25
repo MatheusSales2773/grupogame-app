@@ -63,7 +63,7 @@ Diferenças e limites que permanecem:
 - Fundos usam cores sólidas e sobreposição semitransparente no banner; não reproduzem todos os gradientes do protótipo.
 - Algumas capas e o avatar da Home são alternativas. Valorant usa um logo local em vez da capa de personagens, inclusive em Agendar.
 - Em Detalhes, dois jogadores usam iniciais; o avatar de Tiago difere da captura.
-- Agendar mantém Valorosos fixo, sem modal, seta de seleção ou estado de servidor vazio, conforme o escopo aprovado.
+- Na data desta revisão, Agendar mantinha Valorosos fixo, conforme o escopo inicial. Uma solicitação posterior incluiu o [seletor de servidores](./13-selecao-de-servidor.md), com estado vazio, seta e modal.
 - A categoria de Agendar começa sem seleção; selecionar Ranqueada reproduz o estado destacado. Os campos começam vazios; o estado preenchido surge pela digitação.
 - O rótulo Horário segue as últimas referências; outra imagem usa Hora e minuto.
 - A sexta partida é fictícia. Detalhes dos demais servidores reutilizam capas e descrições de demonstração, pois só Lendários possui uma referência individual.
@@ -113,7 +113,7 @@ O Git também contém alterações das etapas anteriores, já existentes no iní
 - **Login:** interface implementada; entrada apenas substitui a rota por Home, sem Discord real.
 - **Home:** usuário, categorias e partidas locais; filtro local e dois destinos conectados.
 - **Detalhes:** busca por ID, banner, jogadores e voltar; entrada na partida simulada. Compartilhar usa o recurso do sistema quando disponível, sem convite real e sem envio automático.
-- **Agendar:** seleção única, servidor fixo, cinco campos controlados e ajuste de teclado; botão apenas informa que nada foi salvo. Não valida calendário, não persiste nem adiciona partidas à Home.
+- **Agendar na revisão:** seleção única, servidor então fixo, cinco campos controlados e ajuste de teclado; botão apenas informa que nada foi salvo. Posteriormente foi incluída a escolha do servidor. Não valida calendário, não persiste nem adiciona partidas à Home.
 
 ## Conceitos para a apresentação
 

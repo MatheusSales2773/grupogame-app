@@ -11,7 +11,7 @@ Existe uma única rota, [src/app/agendar.tsx](../src/app/agendar.tsx). As imagen
 - `referencias/tela-06-agendar-servidor selecionado.png`: Valorosos selecionado.
 - `referencias/tela-07-agendar.png`: campos preenchidos e teclado aberto.
 
-A tela começa com servidor Valorosos fixo, categoria sem seleção e campos vazios. Não existe o estado de servidor vazio, pois o escopo desta etapa determina um servidor já selecionado e exclui seu modal. O rótulo de horário segue as últimas imagens: **Horário**. A descrição aceita até 100 caracteres.
+A tela começa com “Selecione um servidor”, categoria sem seleção e campos vazios. Por solicitação posterior, o servidor fixo foi substituído pelo seletor da `tela-05-selecione-servidor.png`. Tocar no espaço abaixo das categorias abre a lista; escolher Valorosos ou outro grupo fecha a lista e preenche o bloco com nome, jogo e imagem. O rótulo de horário é **Horário**. A descrição aceita até 100 caracteres.
 
 O botão Agendar dispensa o teclado e mostra “Demonstração: nenhum agendamento foi salvo.” Não valida uma data real, não cria uma partida na Home, não chama backend e não persiste dados. A mensagem não representa sucesso de um agendamento real.
 
@@ -25,9 +25,13 @@ O botão Agendar dispensa o teclado e mostra “Demonstração: nenhum agendamen
 | Este documento | Explicação da quarta tela e roteiro manual |
 | `docs/README.md` e documentos `01` a `08` | Situação, navegação, decisões, apresentação, validação e histórico atualizados |
 
-Nenhum componente novo foi criado. `CategoryCard` já é repetido na Home e agora é reutilizado em Agendar. `ScreenHeader` já organiza o cabeçalho de Detalhes e é reutilizado sem alteração. Os quatro campos numéricos compartilham um estilo, sem precisar de um componente genérico de formulário.
+Na implementação inicial não foram criados componentes novos. Na inclusão do seletor foi criado `ServerSelectModal` para organizar a lista e seus estilos sem aumentar o formulário. `CategoryCard` é reutilizado da Home e `ScreenHeader` de Detalhes. Os quatro campos numéricos compartilham um estilo, sem precisar de um componente genérico de formulário.
 
-O logo de Valorant, as fontes e os ícones de categorias já existiam. O logo difere da capa de personagens da referência, como já registrado em [assets/README.md](../assets/README.md). O servidor é um bloco informativo sem botão nem seta de seleção, já que não pode ser trocado nesta etapa. Na revisão foi adicionado o pequeno marcador quadrado ao canto dos cartões de Agendar, mantendo o visual da Home.
+O logo de Valorant, as fontes e os ícones de categorias já existiam. O logo difere da capa de personagens da referência, como já registrado em [assets/README.md](../assets/README.md). O bloco do servidor agora é um `Pressable` com seta, permitindo escolher e trocar o grupo. Na revisão foi adicionado o pequeno marcador quadrado ao canto dos cartões de Agendar, mantendo o visual da Home.
+
+## Seleção do servidor — tela cinco
+
+O fluxo e os novos arquivos estão explicados em [Seleção de servidor](./13-selecao-de-servidor.md). `selectedServerId` começa em `null` e guarda somente o ID escolhido; `servers.find(...)` obtém os dados locais. `showServerSelect` controla a visibilidade do modal. O callback `onSelect` recebe um ID, atualiza a seleção e fecha o painel. Fechar sem selecionar mantém a escolha anterior e os campos. O teclado é dispensado antes de abrir a lista.
 
 ## Categoria: estado, props e callback
 
@@ -43,6 +47,7 @@ const [selectedCategoryId, setSelectedCategoryId] = useState<CategoryId | null>(
   selected={selectedCategoryId === category.id}
   onPress={() => setSelectedCategoryId(category.id)}
   showSelectionIndicator
+  dimUnselected
   accessibilityHint="Seleciona esta categoria para a partida. Apenas uma pode ser selecionada."
 />
 ```
@@ -52,6 +57,10 @@ const [selectedCategoryId, setSelectedCategoryId] = useState<CategoryId | null>(
 No componente, `[styles.card, selected && styles.selected]` aplica o estilo base e o fundo destacado quando selecionado. Em Agendar, `showSelectionIndicator` exibe um quadrado no canto: vazio quando não selecionado e vermelho quando selecionado. Uma sobreposição de estilo mantém a borda azul, como na referência. Na Home, essa prop é `false` por padrão e a seleção continua com borda vermelha. O componente não tem estado próprio. `accessibilityState={{ selected }}` também comunica a seleção para leitores de tela.
 
 A nova prop `accessibilityHint` explica a ação correta em Agendar. A Home não precisa passá-la: o valor padrão continua explicando seu filtro. Essa adaptação evita que a tela de formulário anuncie uma instrução incorreta.
+
+`dimUnselected` é uma prop opcional, com padrão `false`. Agendar passa essa prop para aplicar `opacity: 0.4` aos cartões cujo `selected` é `false`, deixando fundo, ícone e texto apagados. Ao escolher uma categoria, o estilo de baixa opacidade deixa de ser aplicado a ela e passa a ser aplicado à anterior. A categoria selecionada mantém as cores e o marcador existentes. A Home não passa essa prop e preserva seu visual.
+
+No array de estilos, `dimUnselected && !selected && styles.unselected` aparece após o feedback de toque. Assim, tocar em uma categoria ainda não selecionada não aumenta temporariamente sua opacidade. Opacidade não desativa o cartão: `onPress` continua funcionando. Não foi necessário criar outro estado, pois o ID selecionado já determina o destaque.
 
 As quatro categorias são renderizadas com `map` dentro de uma `ScrollView` horizontal, usando `key={category.id}`. É uma lista pequena e fixa; não há necessidade de uma segunda lista virtualizada. A rolagem horizontal mantém a última categoria acessível em telas estreitas.
 
@@ -123,11 +132,11 @@ Todos os estilos específicos ficam em `StyleSheet.create` no final da tela. As 
 7. Teclado numérico, limite de caracteres e validação de uma data são conceitos distintos.
 8. `ScrollView`, `KeyboardAvoidingView` e `SafeAreaView` resolvem necessidades diferentes de espaço.
 9. `navigate` abre Agendar mantendo a Home e evita duplicar o destino ativo; `back` retorna para a tela anterior.
-10. Nada é salvo; servidor é fixo, dados são locais e o botão apresenta somente uma mensagem.
+10. Nada é salvo; o servidor é escolhido em um modal usando estado local e o botão Agendar apresenta somente uma mensagem.
 
 ## Roteiro manual pendente
 
-- [ ] Abrir Agendar pelo `+` e conferir Valorosos, campos vazios e nenhuma categoria marcada.
+- [ ] Abrir Agendar pelo `+` e conferir “Selecione um servidor”, campos vazios e categorias apagadas.
 - [ ] Selecionar as quatro categorias, rolando horizontalmente até Treino.
 - [ ] Confirmar somente um destaque e que tocar novamente mantém a seleção.
 - [ ] Voltar à Home e conferir que seu filtro original continua funcionando.
@@ -136,7 +145,8 @@ Todos os estilos específicos ficam em `StyleSheet.create` no final da tela. As 
 - [ ] No Android e iOS, focar cada campo, principalmente descrição, e rolar com teclado aberto.
 - [ ] Confirmar que o campo focado e o botão podem ser alcançados em tela baixa e com texto ampliado.
 - [ ] Tocar em Agendar com teclado aberto e conferir a mensagem, sem criação de partida na Home.
-- [ ] Tocar no servidor e confirmar que nenhum modal abre.
+- [ ] Abrir a lista abaixo das categorias, escolher Valorosos e conferir nome, imagem e jogo.
+- [ ] Reabrir, trocar o servidor e fechar sem escolher; conferir que os campos e a categoria permanecem.
 - [ ] Testar voltar e acesso direto à rota; conferir Login e Detalhes sem regressões.
 
 Resultados dos comandos: [Execução e validação](./05-execucao-e-validacao.md).

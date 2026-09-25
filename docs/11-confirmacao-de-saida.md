@@ -2,7 +2,7 @@
 
 [Voltar ao índice](./README.md)
 
-O modal de saída havia ficado fora das quatro telas solicitadas inicialmente. Foi acrescentado após o relato de que a tela de sair não funcionava, usando `referencias/tela-08-sair.png` como referência. O modal da lista de servidores continua excluído.
+O modal de saída havia ficado fora das quatro telas solicitadas inicialmente. Foi acrescentado após o relato de que a tela de sair não funcionava, usando `referencias/tela-08-sair.png` como referência. Em outra solicitação posterior, foi incluído também o [modal da lista de servidores](./13-selecao-de-servidor.md), independente da confirmação de saída.
 
 ## Como usar
 

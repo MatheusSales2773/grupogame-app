@@ -26,6 +26,8 @@ Também foram atualizados o índice, a análise, o plano, o guia de apresentaç�
 
 Cada `Server` possui `id`, `name`, `description`, `banner` e `players`. Os seis identificadores correspondem aos `serverId` das partidas da Home. O grupo de três jogadores é compartilhado pelos registros apenas como demonstração; nenhuma informação é consultada em uma API.
 
+Na inclusão do seletor de Agendar, o mesmo tipo recebeu `game`, `image` e `isAdmin`. Esses campos alimentam a lista de grupos e o bloco selecionado; o comportamento de Detalhes permanece igual.
+
 `Player` possui `id`, `name`, `initials`, `avatar` opcional e `status`. O tipo de status aceita somente `'available'` ou `'busy'`. Esses valores são dados fixos, não representam presença online real.
 
 Lendários reproduz nome, descrição e banner da referência. Os outros servidores usam capas já existentes e descrições fictícias, pois não há uma referência individual para cada um. O avatar de Tiago é reutilizado da Home; Rodrigo e Diego aparecem com iniciais porque suas fotos exatas não estão disponíveis localmente. Essa diferença visual deve ser informada na apresentação.

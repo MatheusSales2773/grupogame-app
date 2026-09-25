@@ -4,9 +4,9 @@
 
 ## Escopo aprovado
 
-As telas solicitadas são Login, Home, Detalhes do servidor e Agendar com servidor selecionado. Agendar deve permitir trocar a categoria e refletir a mudança na interface. O modal da lista de servidores não deve ser desenvolvido.
+As telas inicialmente solicitadas foram Login, Home, Detalhes do servidor e Agendar com servidor selecionado. Agendar permite trocar a categoria e refletir a mudança na interface. O modal da lista de servidores foi excluído inicialmente e incluído por solicitação posterior: veja [Seleção de servidor](./13-selecao-de-servidor.md).
 
-Após a análise, foi decidido implementar uma tela por vez. Login, Home, Detalhes do servidor e Agendar foram implementados em etapas separadas. A quarta tela usa somente estado local e servidor fixo; a revisão visual e os testes em aparelho permanecem pendentes.
+Após a análise, foi decidido implementar uma tela por vez. Login, Home, Detalhes do servidor e Agendar foram implementados em etapas separadas. A quarta tela usa somente estado local, agora com seleção de servidor; a revisão visual e os testes em aparelho permanecem pendentes.
 
 Após a revisão, foi solicitada também a confirmação de saída de `tela-08-sair.png`. Ela foi adicionada como modal da Home, aberto pelo avatar, sem criar uma quinta rota.
 
@@ -89,7 +89,7 @@ O botão `+` está ativo e abre Agendar. `AppointmentCard` recebe `handleOpenSer
 
 Detalhes lê o identificador com `useLocalSearchParams` e encontra os dados usando `find`. Nenhum objeto completo é transportado pela navegação. A tela também trata servidor inexistente e entrada direta sem histórico.
 
-Agendar usa Valorosos/Valorant como servidor fixo de demonstração, sem construir o modal excluído. O botão apresenta somente uma mensagem local, sem criar ou salvar partidas.
+Agendar começa sem servidor escolhido e abre a lista por um bloco clicável abaixo das categorias. Valorosos/Valorant é uma das opções locais. O botão Agendar apresenta somente uma mensagem local, sem criar ou salvar partidas.
 
 ## Seleção de categorias em Agendar — implementada
 
@@ -109,9 +109,9 @@ Dia, mês, hora, minuto e descrição usam estado local e `TextInput` controlado
 1. Login — implementado; revisão visual manual pendente.
 2. Home — implementada com dados locais, saudação, categorias, partidas e filtro; revisão visual manual pendente.
 3. Detalhes do servidor — implementado: informações, banner, jogadores e ações; revisão visual manual pendente.
-4. Agendar — implementado: servidor fixo, categoria, campos, ajuste de teclado e simulação; testes em aparelho pendentes.
+4. Agendar — implementado: seleção de servidor, categoria, campos, ajuste de teclado e simulação; testes em aparelho pendentes.
 5. Revisão do fluxo completo e comparação visual com as referências.
 
-Em cada etapa, revisar os assets necessários e validar o código antes de avançar. Configuração de ESLint, autenticação real, persistência e modal de servidores continuam fora do escopo. O modal de saída foi incluído por solicitação posterior.
+Em cada etapa, revisar os assets necessários e validar o código antes de avançar. Configuração de ESLint, autenticação real e persistência continuam fora do escopo. Os modais de saída e servidores foram incluídos por solicitações posteriores.
 
 A documentação deve acompanhar cada etapa: atualizar o índice, o plano, a explicação da tela, os resultados de validação e o histórico. Manter os testes manuais pendentes enquanto não forem executados.

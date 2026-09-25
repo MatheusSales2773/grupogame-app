@@ -9,6 +9,7 @@ type CategoryCardProps = {
   onPress: () => void;
   accessibilityHint?: string;
   showSelectionIndicator?: boolean;
+  dimUnselected?: boolean;
 };
 
 export function CategoryCard({
@@ -17,6 +18,7 @@ export function CategoryCard({
   onPress,
   accessibilityHint = 'Filtra as partidas. Toque novamente para mostrar todas.',
   showSelectionIndicator = false,
+  dimUnselected = false,
 }: CategoryCardProps) {
   return (
     <Pressable
@@ -30,6 +32,7 @@ export function CategoryCard({
         selected && styles.selected,
         showSelectionIndicator && selected && styles.selectedWithIndicator,
         pressed && styles.pressed,
+        dimUnselected && !selected && styles.unselected,
       ]}>
       {showSelectionIndicator && (
         <View style={[styles.indicator, selected && styles.indicatorSelected]} />
@@ -77,6 +80,9 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.75,
+  },
+  unselected: {
+    opacity: 0.4,
   },
   icon: {
     width: 48,

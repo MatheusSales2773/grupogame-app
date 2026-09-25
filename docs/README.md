@@ -16,6 +16,7 @@ Documentação do trabalho acadêmico em React Native, Expo e TypeScript. Este c
 10. [Revisão final](./10-revisao-final.md): fluxo, correções, comparação com referências, compilação e limites dos testes.
 11. [Confirmação de saída](./11-confirmacao-de-saida.md): avatar da Home, modal, cancelar e voltar ao Login.
 12. [Teclado e rolagem](./12-teclado-e-rolagem.md): adaptação de `referencias/exemplo.js`, ajuste de espaço e função para fechar o teclado.
+13. [Seleção de servidor](./13-selecao-de-servidor.md): lista da tela cinco, estado local, escolha e troca do grupo.
 
 ## Estado documentado
 
@@ -28,12 +29,12 @@ Documentação do trabalho acadêmico em React Native, Expo e TypeScript. Este c
 | Navegação para `/home` | Configurada no código |
 | Home | Implementada com dados locais, categorias e lista de partidas |
 | Detalhes do servidor | Implementado; recebe ID pela rota e exibe dados locais; revisão visual pendente |
-| Agendar e seleção de categorias | Implementados em uma rota, com servidor fixo e campos locais; teste de teclado em aparelho pendente |
-| Modal da lista de servidores | Excluído do escopo |
+| Agendar e seleção de categorias | Implementados em uma rota, com escolha de servidor e campos locais; teste de teclado em aparelho pendente |
+| Modal da lista de servidores | Implementado por solicitação posterior, com seis grupos locais e retorno da escolha ao formulário |
 | Modal de saída | Implementado após a revisão, por solicitação adicional; abre ao tocar no avatar da Home |
 | Revisão técnica das quatro telas | Concluída; navegação repetida e marcador de categoria ajustados; interação em aparelho pendente |
 
-Ao tocar em **Entrar com Discord**, o código substitui o Login pela Home. Os cartões abrem `/servidor/[id]`, passando somente o identificador do servidor. Detalhes permite voltar e simular a entrada na partida; compartilhar abre a opção do sistema quando disponível. O botão `+` abre `/agendar`, com Valorosos fixo. Agendar mantém os campos apenas no estado da tela e não salva partidas.
+Ao tocar em **Entrar com Discord**, o código substitui o Login pela Home. Os cartões abrem `/servidor/[id]`, passando somente o identificador do servidor. Detalhes permite voltar e simular a entrada na partida; compartilhar abre a opção do sistema quando disponível. O botão `+` abre `/agendar`, inicialmente sem servidor escolhido. Tocar no seletor abaixo das categorias abre a lista de grupos. Agendar mantém a seleção e os campos apenas no estado da tela e não salva partidas.
 
 ## Regras acordadas
 

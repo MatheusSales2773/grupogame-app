@@ -6,7 +6,7 @@
 
 A Home substitui o destino vazio do Login, seguindo [tela-02-home.png](../referencias/tela-02-home.png). Exibe avatar, saudação, mensagem, botão `+`, categorias horizontais e partidas agendadas. O Login, seu layout de navegação, suas fontes e suas imagens não foram alterados.
 
-Na etapa original da Home, Detalhes e Agendar não foram implementados. Nas etapas seguintes, os cards foram conectados a [Detalhes do servidor](./08-detalhes-do-servidor.md) e o `+` a [Agendar](./09-tela-agendar.md), sem alterar filtros ou estilos. Autenticação, chamadas de API, persistência e modal da lista de servidores continuam sem implementação. Não foram instaladas dependências.
+Na etapa original da Home, Detalhes e Agendar não foram implementados. Nas etapas seguintes, os cards foram conectados a [Detalhes do servidor](./08-detalhes-do-servidor.md) e o `+` a [Agendar](./09-tela-agendar.md), sem alterar filtros ou estilos. Autenticação, chamadas de API e persistência continuam sem implementação. O modal da lista de servidores foi incluído posteriormente em Agendar. Não foram instaladas dependências.
 
 ## Arquivos
 
@@ -52,6 +52,7 @@ Os dados não são eventos reais nem mudam com a data do aparelho. A sexta parti
 | `onPress` | `() => void` | Comunica que o usuário tocou na categoria |
 | `accessibilityHint` | `string`, opcional | Explica a ação para leitores de tela; mantém por padrão a instrução do filtro da Home |
 | `showSelectionIndicator` | `boolean`, opcional | Mostra o marcador usado em Agendar; é `false` por padrão, preservando o visual da Home |
+| `dimUnselected` | `boolean`, opcional | Apaga categorias não selecionadas em Agendar com opacidade 0,4; padrão `false`, sem alterar a Home |
 
 O cartão não possui estado próprio. Ele recebe a seleção da Home e chama uma função quando é tocado. O `Pressable` fornece `pressed`, utilizado para reduzir a opacidade enquanto o toque ocorre. `accessibilityState` informa a seleção aos leitores de tela.
 

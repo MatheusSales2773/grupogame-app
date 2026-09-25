@@ -58,7 +58,7 @@ O TypeScript está em modo estrito. O alias `@/` aponta para `src/`, e `@/assets
 | `src/data/home.ts` | Dados simulados e tipos de usuário, categorias e partidas |
 | `category-card.tsx` e `appointment-card.tsx` | Cartões reutilizados nos itens das listas da Home |
 | `src/app/servidor/[id].tsx` | Detalhes; lê ID da rota, busca dados e renderiza banner, jogadores e ações |
-| `src/app/agendar.tsx` | Formulário com servidor fixo, seleção única, campos controlados e ajuste de teclado |
+| `src/app/agendar.tsx` | Formulário com escolha de servidor, seleção única de categoria, campos controlados e ajuste de teclado |
 | `src/data/servers.ts` | Seis servidores e grupo de jogadores simulados |
 | `screen-header.tsx` e `player-item.tsx` | Cabeçalho e linhas de jogadores de Detalhes |
 | `src/app/explore.tsx` | Demonstração preservada; continua sendo uma rota, sem acesso pela interface do Login |
@@ -83,7 +83,7 @@ Todas as dez imagens de [referencias](../referencias) foram analisadas:
 | `tela-2.1-home.png` | Na verdade, mostra Detalhes do servidor: banner, descrição e jogadores |
 | `tela-03-agendar.png` | Formulário sem categoria ou servidor selecionados |
 | `tela-04-agendar-categoria- selecionada.png` | Destaque visual da categoria escolhida |
-| `tela-05-selecione-servidor.png` | Modal da lista de servidores, excluído do escopo |
+| `tela-05-selecione-servidor.png` | Modal da lista de servidores, incluído por solicitação posterior |
 | `tela-06-agendar-servidor selecionado.png` | Formulário com Valorosos/Valorant selecionado |
 | `tela-07-agendar.png` | Formulário preenchido com teclado aberto |
 | `tela-08-sair.png` | Confirmação de saída, fora das quatro telas solicitadas |
@@ -97,4 +97,4 @@ Inicialmente, os assets eram apenas os do Expo. Para o Login foram adicionadas a
 
 Para a Home foram adicionados ícones e imagens locais de demonstração; algumas capas e o avatar diferem dos recortes da referência. A quarta categoria, parcialmente cortada, foi identificada como Treino no projeto educacional original. Detalhes usa o banner original de Lendários, reutiliza o avatar de Tiago e mostra iniciais para os outros dois jogadores. Há pequenas diferenças entre as imagens de Agendar, como os rótulos “Horário” e “Hora e minuto”.
 
-“Entrar na partida” exibe uma confirmação de simulação. Compartilhar oferece nome e descrição ao sistema, sem link de convite. A integração real com Discord não foi implementada. Agendar foi limitado à interface e estado local: não atualiza a Home nem persiste dados. Reutiliza o logo de Valorant já existente, com servidor fixo e sem modal de seleção.
+“Entrar na partida” exibe uma confirmação de simulação. Compartilhar oferece nome e descrição ao sistema, sem link de convite. A integração real com Discord não foi implementada. Agendar foi limitado à interface e estado local: não atualiza a Home nem persiste dados. Reutiliza imagens locais e agora permite escolher o grupo pelo [modal de servidores](./13-selecao-de-servidor.md).

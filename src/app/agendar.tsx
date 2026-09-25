@@ -1,5 +1,6 @@
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
+import { SymbolView } from 'expo-symbols';
 import { useState } from 'react';
 import {
   Keyboard,
@@ -17,17 +18,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { CategoryCard } from '@/components/category-card';
 import { ScreenHeader } from '@/components/screen-header';
+import { ServerSelectModal } from '@/components/server-select-modal';
 import { categories, type CategoryId } from '@/data/home';
-
-// Servidor fixo de demonstração: não existe seleção por modal nesta etapa.
-const selectedServer = {
-  name: 'Valorosos',
-  game: 'Valorant',
-  image: require('@/assets/images/home/valorant.png'),
-};
+import { servers } from '@/data/servers';
 
 export default function ScheduleScreen() {
   const [selectedCategoryId, setSelectedCategoryId] = useState<CategoryId | null>(null);
+  const [selectedServerId, setSelectedServerId] = useState<string | null>(null);
+  const [showServerSelect, setShowServerSelect] = useState(false);
+  const selectedServer = servers.find((server) => server.id === selectedServerId);
   const [day, setDay] = useState('');
   const [month, setMonth] = useState('');
   const [hour, setHour] = useState('');
@@ -48,6 +47,16 @@ export default function ScheduleScreen() {
     fecharTeclado();
     // Apenas feedback local: não salva nem adiciona uma partida à Home.
     setShowFeedback(true);
+  }
+
+  function handleOpenServers() {
+    fecharTeclado();
+    setShowServerSelect(true);
+  }
+
+  function handleSelectServer(serverId: string) {
+    setSelectedServerId(serverId);
+    setShowServerSelect(false);
   }
 
   return (
@@ -83,19 +92,27 @@ export default function ScheduleScreen() {
                       selected={selectedCategoryId === category.id}
                       onPress={() => setSelectedCategoryId(category.id)}
                       showSelectionIndicator
+                      dimUnselected
                       accessibilityHint="Seleciona esta categoria para a partida. Apenas uma pode ser selecionada."
                     />
                   ))}
                 </ScrollView>
 
                 <View style={styles.form}>
-                  <View style={styles.server} accessibilityLabel="Servidor fixo de demonstração: Valorosos, Valorant">
-                    <Image source={selectedServer.image} style={styles.serverImage} contentFit="cover" accessible={false} />
+                  <Pressable onPress={handleOpenServers} accessibilityRole="button"
+                    accessibilityLabel={selectedServer ? `Servidor: ${selectedServer.name}, ${selectedServer.game}` : 'Selecione um servidor'}
+                    accessibilityHint="Abre a lista para escolher ou trocar o servidor"
+                    style={({ pressed }) => [styles.server, pressed && styles.pressed]}>
+                    {selectedServer ? (
+                      <Image source={selectedServer.image} style={styles.serverImage} contentFit="cover" accessible={false} />
+                    ) : <View style={styles.serverImage} />}
                     <View style={styles.serverInfo}>
-                      <Text style={styles.serverName}>{selectedServer.name}</Text>
-                      <Text style={styles.serverGame}>{selectedServer.game}</Text>
+                      <Text style={styles.serverName}>{selectedServer?.name ?? 'Selecione um servidor'}</Text>
+                      {selectedServer && <Text style={styles.serverGame}>{selectedServer.game}</Text>}
                     </View>
-                  </View>
+                    <SymbolView name={{ ios: 'chevron.right', android: 'chevron_right', web: 'chevron_right' }}
+                      size={18} tintColor="#ABB1CC" style={styles.serverChevron} />
+                  </Pressable>
 
                   <View style={styles.dateAndTime}>
                     <View style={styles.fieldGroup}>
@@ -173,6 +190,8 @@ export default function ScheduleScreen() {
           </ScrollView>
         </View>
       </SafeAreaView>
+      <ServerSelectModal visible={showServerSelect} selectedServerId={selectedServerId}
+        onSelect={handleSelectServer} onClose={() => setShowServerSelect(false)} />
     </KeyboardAvoidingView>
   );
 }
@@ -197,6 +216,7 @@ const styles = StyleSheet.create({
   serverInfo: { flex: 1, paddingHorizontal: 16, paddingVertical: 8, gap: 4 },
   serverName: { fontFamily: 'RajdhaniBold', fontSize: 20, lineHeight: 24, color: '#DDE3F0' },
   serverGame: { fontFamily: 'Inter', fontSize: 13, lineHeight: 20, color: '#ABB1CC' },
+  serverChevron: { marginRight: 16 },
   dateAndTime: {
     flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between',
     gap: 20, marginTop: 28,

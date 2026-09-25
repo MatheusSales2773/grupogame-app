@@ -145,6 +145,14 @@ O lint continuou sem configuração e nenhuma dependência foi instalada. Não h
 
 ## Roteiro manual pendente — Login e transição para Home
 
+### Ajuste de opacidade em Agendar — 24/09/2026
+
+`npx.cmd tsc --noEmit --incremental false --noUnusedLocals --noUnusedParameters` passou após a adição da prop `dimUnselected`. O comando `npx.cmd expo lint` solicitou instalar/configurar ESLint; a instalação foi recusada conforme a orientação do projeto. Nenhuma dependência foi adicionada. Não foi repetida a exportação, pois a mudança se limita a uma prop e um estilo condicional.
+
+No aparelho, conferir que todas as categorias começam apagadas, apenas a escolhida fica com cores normais e a anterior volta à opacidade 0,4 ao trocar. Confirmar também que a Home mantém seu visual. Essa conferência visual ainda não foi executada.
+
+### Login
+
 - [ ] Abrir o aplicativo e confirmar que o Login é a tela inicial.
 - [ ] Comparar ilustração, título, descrição, botão e espaçamentos com `referencias/tela-01-login.png`.
 - [ ] Confirmar que Rajdhani e Inter carregam corretamente.
@@ -162,7 +170,15 @@ Para voltar a observar o Login na web após a navegação, abrir a URL raiz `/` 
 
 Ao realizar os testes, registrar plataforma, tamanho de tela, resultado e qualquer diferença visual observada. Não marcar os itens como concluídos apenas porque a compilação passou.
 
-## Validações futuras
+## 24/09/2026 — Seleção de servidor em Agendar
+
+- Passou: `npx.cmd tsc --noEmit --incremental false --noUnusedLocals --noUnusedParameters`.
+- Passou: `npx.cmd expo export --platform all --output-dir "$env:TEMP\grupogame-server-select-check"`, gerando bundles Android/iOS/web e 13 rotas estáticas.
+- `npx.cmd expo lint` foi executado, mas não concluiu: não existe configuração de ESLint. A oferta de instalação foi recusada conforme solicitado; nenhum pacote foi adicionado.
+- A exportação mostrou apenas aviso de conflito entre `NO_COLOR` e `FORCE_COLOR` do ambiente.
+- Não foram realizados testes por toque em aparelho nesta etapa. A compilação não comprova a interação do modal ou sua fidelidade visual. Roteiro em [Seleção de servidor](./13-selecao-de-servidor.md).
+
+## Próximas validações
 
 Repetir verificações relevantes quando houver alterações funcionais. Configurar ESLint somente quando essa etapa for solicitada: o comando `expo lint` pode tentar instalar dependências e criar configuração quando ela não existe.
 

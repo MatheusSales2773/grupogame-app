@@ -124,12 +124,30 @@ Código alterado nesta revisão: `src/app/home.tsx`, `src/app/agendar.tsx` e `sr
 - Preservação dos campos, estados, navegação e demais telas; nenhuma biblioteca adicionada.
 - Criação de [Teclado e rolagem](./12-teclado-e-rolagem.md), com diferenças entre reposicionamento, rolagem e fechamento.
 
-## O que ainda falta
+## 24/09/2026 — Opacidade das categorias de Agendar
+
+- Cartões não selecionados usam opacidade 0,4; o selecionado conserva suas cores.
+- A prop opcional `dimUnselected` reutiliza o mesmo `CategoryCard` sem alterar a Home e sem adicionar estado.
+- Código alterado: `src/components/category-card.tsx` e `src/app/agendar.tsx`.
+- Explicação atualizada em [Tela Agendar](./09-tela-agendar.md) e na tabela de props da Home.
+- TypeScript passou; ESLint permanece sem configuração. Conferência visual em aparelho pendente.
+
+## 24/09/2026 — Inclusão da lista de servidores
+
+- Escopo atualizado pelo usuário: o bloco de Valorosos passa a abrir o seletor da tela cinco.
+- Agendar começa sem servidor escolhido; seleção e visibilidade ficam em dois estados locais.
+- Criação de `ServerSelectModal`, com lista rolável, cancelamento e callback que retorna somente o ID.
+- Reutilização dos seis servidores existentes, acrescidos de jogo, imagem e papel fictício no grupo.
+- Preservação da categoria, dos campos, do teclado e das demais telas. Sem novas dependências.
+- Documentação atualizada e explicação em [Seleção de servidor](./13-selecao-de-servidor.md).
+- TypeScript e exportação Android/iOS/web passaram; ESLint não configurado e testes por toque pendentes.
+
+## Pendências atuais
 
 - Realizar a conferência visual e os testes de toque nas quatro telas.
 - Conferir o teclado e a rolagem de Agendar em Android e iOS, incluindo telas pequenas e texto ampliado.
 
-O modal da lista de servidores permanece excluído do escopo. Autenticação real e persistência não foram implementadas. A confirmação de saída agora existe, com teste em aparelho pendente.
+Os modais da lista de servidores e da confirmação de saída foram incluídos por solicitações posteriores. Seus testes em aparelho permanecem pendentes. Autenticação real e persistência não foram implementadas.
 
 ## Como registrar as próximas etapas
 
