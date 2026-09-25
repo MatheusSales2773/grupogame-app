@@ -137,6 +137,12 @@ A revisão acrescentou o marcador de seleção de categorias somente em Agendar.
 
 Não houve navegador/aparelho conectado. Não foram executados testes por toque, digitação, rolagem ou teclado em uma interface renderizada, nem comparação de screenshots do aplicativo. Os resultados, diferenças visuais e limitações estão em [Revisão final](./10-revisao-final.md).
 
+## 24/09/2026 — Ajuste de teclado baseado no exemplo
+
+TypeScript com verificação de itens não utilizados passou, assim como a exportação Android/iOS/web para `$env:TEMP\grupogame-keyboard-check`. A etapa adaptou Agendar com `behavior="padding"`, fechamento por toque no espaço livre e `fecharTeclado()`, preservando os campos controlados.
+
+O lint continuou sem configuração e nenhuma dependência foi instalada. Não havia aparelho ou navegador conectado; o ajuste visual do teclado e os toques ainda precisam ser testados. Explicação e roteiro em [Teclado e rolagem](./12-teclado-e-rolagem.md).
+
 ## Roteiro manual pendente — Login e transição para Home
 
 - [ ] Abrir o aplicativo e confirmar que o Login é a tela inicial.

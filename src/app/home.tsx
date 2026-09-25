@@ -6,10 +6,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppointmentCard } from '@/components/appointment-card';
 import { CategoryCard } from '@/components/category-card';
+import { SignOutModal } from '@/components/sign-out-modal';
 import { appointments, categories, user, type CategoryId } from '@/data/home';
 
 export default function HomeScreen() {
   const [selectedCategoryId, setSelectedCategoryId] = useState<CategoryId | null>(null);
+  const [showSignOut, setShowSignOut] = useState(false);
 
   const visibleAppointments = selectedCategoryId
     ? appointments.filter((appointment) => appointment.categoryId === selectedCategoryId)
@@ -24,6 +26,12 @@ export default function HomeScreen() {
     router.navigate({ pathname: '/servidor/[id]', params: { id: serverId } });
   }
 
+  function handleSignOut() {
+    setShowSignOut(false);
+    // Saída simulada: substitui a Home pelo Login, sem sessão real do Discord.
+    router.replace('/');
+  }
+
   return (
     <SafeAreaView style={styles.screen}>
       <FlatList
@@ -35,7 +43,14 @@ export default function HomeScreen() {
         ListHeaderComponent={
           <View>
             <View style={styles.header}>
-              <Image source={user.avatar} style={styles.avatar} contentFit="cover" accessible={false} />
+              <Pressable
+                onPress={() => setShowSignOut(true)}
+                accessibilityRole="button"
+                accessibilityLabel="Sair"
+                accessibilityHint="Abre a confirmação de saída"
+                style={({ pressed }) => pressed && styles.avatarPressed}>
+                <Image source={user.avatar} style={styles.avatar} contentFit="cover" accessible={false} />
+              </Pressable>
               <View style={styles.greeting}>
                 <Text style={styles.greetingText}>
                   Olá, <Text style={styles.userName}>{user.name}</Text>
@@ -83,6 +98,11 @@ export default function HomeScreen() {
         )}
         ListEmptyComponent={<Text style={styles.empty}>Nenhuma partida nesta categoria.</Text>}
       />
+      <SignOutModal
+        visible={showSignOut}
+        onCancel={() => setShowSignOut(false)}
+        onConfirm={handleSignOut}
+      />
     </SafeAreaView>
   );
 }
@@ -116,6 +136,7 @@ const styles = StyleSheet.create({
     borderColor: '#E91446',
     backgroundColor: '#E91446',
   },
+  avatarPressed: { opacity: 0.75 },
   greeting: { flex: 1, gap: 4 },
   greetingText: {
     fontFamily: 'Inter',

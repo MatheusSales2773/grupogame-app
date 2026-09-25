@@ -106,12 +106,30 @@ Arquivos de código: `src/app/agendar.tsx`, `src/app/home.tsx` e `src/components
 
 Código alterado nesta revisão: `src/app/home.tsx`, `src/app/agendar.tsx` e `src/components/category-card.tsx`. A comparação visual foi feita com referências/código, sem screenshots renderizados do aplicativo. Fluxo por toque, digitação e teclado continuam pendentes de dispositivo conectado.
 
+## Etapa 8 — Confirmação de saída solicitada após a revisão
+
+- Identificação de que o modal de saída não existia, pois ficara fora do escopo inicial.
+- Avatar da Home transformado em botão para abrir a confirmação.
+- Criação de `SignOutModal`, com fundo escuro, painel inferior e botões Não/Sim conforme a referência.
+- Cancelamento fecha o modal; confirmação substitui Home pelo Login, sem sessão real.
+- Sem alterações nas outras telas ou dependências. Explicação em [Confirmação de saída](./11-confirmacao-de-saida.md).
+- TypeScript e exportação Android/iOS/web passaram. ESLint continuou sem configuração; teste por toque pendente.
+
+## 24/09/2026 — Teclado conforme o exemplo fornecido
+
+- Leitura de `referencias/exemplo.js`, preservado como material de consulta.
+- Agendar passou a usar `KeyboardAvoidingView` com `padding` nas duas plataformas nativas, como no exemplo.
+- Inclusão de `fecharTeclado()` e `TouchableWithoutFeedback` para fechar o teclado ao tocar no espaço livre, sem apagar os campos.
+- Reutilização dessa função no botão Agendar; adição de `bounces={false}` e contêiner interno com `flexGrow: 1`.
+- Preservação dos campos, estados, navegação e demais telas; nenhuma biblioteca adicionada.
+- Criação de [Teclado e rolagem](./12-teclado-e-rolagem.md), com diferenças entre reposicionamento, rolagem e fechamento.
+
 ## O que ainda falta
 
 - Realizar a conferência visual e os testes de toque nas quatro telas.
 - Conferir o teclado e a rolagem de Agendar em Android e iOS, incluindo telas pequenas e texto ampliado.
 
-O modal da lista de servidores permanece excluído do escopo. Autenticação real, persistência e modal de saída não foram implementados.
+O modal da lista de servidores permanece excluído do escopo. Autenticação real e persistência não foram implementadas. A confirmação de saída agora existe, com teste em aparelho pendente.
 
 ## Como registrar as próximas etapas
 

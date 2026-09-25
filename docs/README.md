@@ -14,6 +14,8 @@ Documentação do trabalho acadêmico em React Native, Expo e TypeScript. Este c
 8. [Detalhes do servidor](./08-detalhes-do-servidor.md): rota dinâmica, dados locais, jogadores, props, estilos e ações.
 9. [Tela Agendar](./09-tela-agendar.md): seleção única de categoria, campos controlados, teclado, rolagem e simulação local.
 10. [Revisão final](./10-revisao-final.md): fluxo, correções, comparação com referências, compilação e limites dos testes.
+11. [Confirmação de saída](./11-confirmacao-de-saida.md): avatar da Home, modal, cancelar e voltar ao Login.
+12. [Teclado e rolagem](./12-teclado-e-rolagem.md): adaptação de `referencias/exemplo.js`, ajuste de espaço e função para fechar o teclado.
 
 ## Estado documentado
 
@@ -28,7 +30,7 @@ Documentação do trabalho acadêmico em React Native, Expo e TypeScript. Este c
 | Detalhes do servidor | Implementado; recebe ID pela rota e exibe dados locais; revisão visual pendente |
 | Agendar e seleção de categorias | Implementados em uma rota, com servidor fixo e campos locais; teste de teclado em aparelho pendente |
 | Modal da lista de servidores | Excluído do escopo |
-| Modal de saída | Fora da etapa solicitada |
+| Modal de saída | Implementado após a revisão, por solicitação adicional; abre ao tocar no avatar da Home |
 | Revisão técnica das quatro telas | Concluída; navegação repetida e marcador de categoria ajustados; interação em aparelho pendente |
 
 Ao tocar em **Entrar com Discord**, o código substitui o Login pela Home. Os cartões abrem `/servidor/[id]`, passando somente o identificador do servidor. Detalhes permite voltar e simular a entrada na partida; compartilhar abre a opção do sistema quando disponível. O botão `+` abre `/agendar`, com Valorosos fixo. Agendar mantém os campos apenas no estado da tela e não salva partidas.

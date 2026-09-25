@@ -123,6 +123,8 @@ O uso de alturas mínimas e quebra de linha favorece textos maiores sem esconder
 
 ## Navegação atual
 
+O avatar agora abre a [confirmação de saída](./11-confirmacao-de-saida.md). O estado `showSignOut` controla o modal: cancelar apenas o fecha; confirmar usa `router.replace('/')` para retornar ao Login. O filtro continua independente desse estado.
+
 O Login continua usando `router.replace('/home')`; agora o destino contém a interface.
 
 O `+` está ativo e chama `router.navigate('/agendar')`. O formulário usa somente estado local; ele não acrescenta partidas a esta lista.

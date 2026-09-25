@@ -78,14 +78,18 @@ A descrição usa `value={description}`, `onChangeText={setDescription}`, `multi
 
 A árvore principal é `KeyboardAvoidingView` → `SafeAreaView` → contêiner → `ScreenHeader` e `ScrollView`.
 
-- `KeyboardAvoidingView` envolve a tela desde o topo. Usa `padding` no iOS e `height` no Android para ajustar o espaço quando o teclado aparece. Na web fica desativado, deixando o navegador controlar seu viewport.
+- `KeyboardAvoidingView` envolve a tela desde o topo. Após a adaptação de `referencias/exemplo.js`, usa `padding` no iOS e Android para ajustar o espaço quando o teclado aparece. Na web fica desativado, deixando o navegador controlar seu viewport.
 - Não há cabeçalho nativo sobreposto nem deslocamento manual de teclado. A área segura e o cabeçalho visual estão dentro do contêiner ajustável.
 - A `ScrollView` vertical permite alcançar os campos e o botão quando a altura disponível diminui. O botão está dentro do conteúdo rolável.
 - `keyboardShouldPersistTaps="handled"` permite acionar botões sem exigir um primeiro toque apenas para fechar o teclado.
 - `keyboardDismissMode` usa `interactive` no iOS e `on-drag` nas demais plataformas.
-- `Keyboard.dismiss()` fecha o teclado ao tocar em Agendar. `showFeedback`, inicialmente `false`, passa a `true` e exibe a mensagem local.
+- `TouchableWithoutFeedback` envolve uma `View` com o conteúdo e chama `fecharTeclado()` ao tocar no espaço livre. A função usa `Keyboard.dismiss()` e também é chamada pelo botão Agendar, sem apagar os campos.
+- O contêiner interno usa `flexGrow: 1` para preservar a distribuição do formulário e do rodapé. `bounces={false}` evita o efeito elástico da rolagem vertical onde suportado.
+- Ao tocar em Agendar, `showFeedback`, inicialmente `false`, passa a `true` e exibe a mensagem local.
 
 Não foi instalada biblioteca de teclado nem alterada a configuração nativa. A combinação utiliza componentes do React Native; a compilação não comprova posicionamento do teclado em aparelho. Esse teste permanece no roteiro manual abaixo.
+
+A comparação com o exemplo e a explicação para apresentação estão em [Teclado e rolagem](./12-teclado-e-rolagem.md).
 
 ## Navegação
 

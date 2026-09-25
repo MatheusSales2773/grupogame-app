@@ -8,6 +8,8 @@ As telas solicitadas são Login, Home, Detalhes do servidor e Agendar com servid
 
 Após a análise, foi decidido implementar uma tela por vez. Login, Home, Detalhes do servidor e Agendar foram implementados em etapas separadas. A quarta tela usa somente estado local e servidor fixo; a revisão visual e os testes em aparelho permanecem pendentes.
 
+Após a revisão, foi solicitada também a confirmação de saída de `tela-08-sair.png`. Ela foi adicionada como modal da Home, aberto pelo avatar, sem criar uma quinta rota.
+
 ## Decisões e motivos
 
 | Decisão | Por quê | Conceito |
@@ -110,6 +112,6 @@ Dia, mês, hora, minuto e descrição usam estado local e `TextInput` controlado
 4. Agendar — implementado: servidor fixo, categoria, campos, ajuste de teclado e simulação; testes em aparelho pendentes.
 5. Revisão do fluxo completo e comparação visual com as referências.
 
-Em cada etapa, revisar os assets necessários e validar o código antes de avançar. Configuração de ESLint, autenticação real, persistência, modal de servidores e modal de saída não fazem parte da etapa atual.
+Em cada etapa, revisar os assets necessários e validar o código antes de avançar. Configuração de ESLint, autenticação real, persistência e modal de servidores continuam fora do escopo. O modal de saída foi incluído por solicitação posterior.
 
 A documentação deve acompanhar cada etapa: atualizar o índice, o plano, a explicação da tela, os resultados de validação e o histórico. Manter os testes manuais pendentes enquanto não forem executados.

@@ -84,6 +84,10 @@ O texto vem do estado por `value`, e `onChangeText` atualiza esse estado. Os cam
 
 A descrição usa `multiline` e `maxLength={100}`. `KeyboardAvoidingView` ajusta o espaço quando o teclado abre; `ScrollView` permite alcançar campos e botão. O comportamento precisa ser conferido em Android e iOS. Agendar dispensa o teclado e mostra uma mensagem local, sem salvar dados.
 
+### A função fecharTeclado faz a tela subir?
+
+Não. Quem ajusta o espaço é `KeyboardAvoidingView`, agora com `behavior="padding"` como no `exemplo.js`. `fecharTeclado` chama `Keyboard.dismiss()` para fechar o teclado e remover o foco, sem apagar o estado dos campos. `TouchableWithoutFeedback` liga essa função ao toque no espaço livre. A explicação completa está em [Teclado e rolagem](./12-teclado-e-rolagem.md).
+
 ### Por que abrir Detalhes e Agendar com navigate?
 
 Para abrir o destino mantendo a Home na pilha e reutilizar a tela quando ela já estiver ativa. Na revisão, o teste isolado da pilha mostrou que dois `push` criavam duas telas; dois `navigate` mantiveram somente uma. O cabeçalho recebe `onBack` como prop e não conhece os endereços. Se não houver histórico, a tela usa `/home` como destino de retorno. O teste da pilha não substitui o teste de toque no aparelho.

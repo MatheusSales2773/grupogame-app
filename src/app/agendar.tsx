@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -39,8 +40,12 @@ export default function ScheduleScreen() {
     else router.replace('/home');
   }
 
-  function handleSchedule() {
+  function fecharTeclado() {
     Keyboard.dismiss();
+  }
+
+  function handleSchedule() {
+    fecharTeclado();
     // Apenas feedback local: não salva nem adiciona uma partida à Home.
     setShowFeedback(true);
   }
@@ -49,7 +54,7 @@ export default function ScheduleScreen() {
     <KeyboardAvoidingView
       style={styles.screen}
       enabled={Platform.OS !== 'web'}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      behavior="padding">
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
           <ScreenHeader title="Agendar partida" onBack={handleBack} />
@@ -57,108 +62,114 @@ export default function ScheduleScreen() {
           <ScrollView
             style={styles.scroll}
             contentContainerStyle={styles.scrollContent}
+            bounces={false}
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
             keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'}>
-            <Text style={[styles.label, styles.categoryLabel]} accessibilityRole="header">Categoria</Text>
-            <ScrollView
-              horizontal
-              style={styles.categoryScroll}
-              showsHorizontalScrollIndicator={false}
-              keyboardShouldPersistTaps="handled"
-              contentContainerStyle={styles.categories}>
-              {categories.map((category) => (
-                <CategoryCard
-                  key={category.id}
-                  category={category}
-                  selected={selectedCategoryId === category.id}
-                  onPress={() => setSelectedCategoryId(category.id)}
-                  showSelectionIndicator
-                  accessibilityHint="Seleciona esta categoria para a partida. Apenas uma pode ser selecionada."
-                />
-              ))}
-            </ScrollView>
-
-            <View style={styles.form}>
-              <View style={styles.server} accessibilityLabel="Servidor fixo de demonstração: Valorosos, Valorant">
-                <Image source={selectedServer.image} style={styles.serverImage} contentFit="cover" accessible={false} />
-                <View style={styles.serverInfo}>
-                  <Text style={styles.serverName}>{selectedServer.name}</Text>
-                  <Text style={styles.serverGame}>{selectedServer.game}</Text>
-                </View>
-              </View>
-
-              <View style={styles.dateAndTime}>
-                <View style={styles.fieldGroup}>
-                  <Text style={styles.label}>Dia e mês</Text>
-                  <View style={styles.inputRow}>
-                    <TextInput
-                      accessibilityLabel="Dia" value={day}
-                      onChangeText={(text) => setDay(text.replace(/\D/g, ''))}
-                      keyboardType="number-pad" maxLength={2}
-                      selectionColor="#E91446" style={styles.numberInput}
+            {/* Como no exemplo: tocar no espaço livre fecha o teclado. */}
+            <TouchableWithoutFeedback onPress={fecharTeclado} accessible={false}>
+              <View style={styles.formContent}>
+                <Text style={[styles.label, styles.categoryLabel]} accessibilityRole="header">Categoria</Text>
+                <ScrollView
+                  horizontal
+                  style={styles.categoryScroll}
+                  showsHorizontalScrollIndicator={false}
+                  keyboardShouldPersistTaps="handled"
+                  contentContainerStyle={styles.categories}>
+                  {categories.map((category) => (
+                    <CategoryCard
+                      key={category.id}
+                      category={category}
+                      selected={selectedCategoryId === category.id}
+                      onPress={() => setSelectedCategoryId(category.id)}
+                      showSelectionIndicator
+                      accessibilityHint="Seleciona esta categoria para a partida. Apenas uma pode ser selecionada."
                     />
-                    <Text style={styles.separator}>/</Text>
-                    <TextInput
-                      accessibilityLabel="Mês" value={month}
-                      onChangeText={(text) => setMonth(text.replace(/\D/g, ''))}
-                      keyboardType="number-pad" maxLength={2}
-                      selectionColor="#E91446" style={styles.numberInput}
-                    />
+                  ))}
+                </ScrollView>
+
+                <View style={styles.form}>
+                  <View style={styles.server} accessibilityLabel="Servidor fixo de demonstração: Valorosos, Valorant">
+                    <Image source={selectedServer.image} style={styles.serverImage} contentFit="cover" accessible={false} />
+                    <View style={styles.serverInfo}>
+                      <Text style={styles.serverName}>{selectedServer.name}</Text>
+                      <Text style={styles.serverGame}>{selectedServer.game}</Text>
+                    </View>
                   </View>
-                </View>
 
-                <View style={styles.fieldGroup}>
-                  <Text style={styles.label}>Horário</Text>
-                  <View style={styles.inputRow}>
-                    <TextInput
-                      accessibilityLabel="Hora" value={hour}
-                      onChangeText={(text) => setHour(text.replace(/\D/g, ''))}
-                      keyboardType="number-pad" maxLength={2}
-                      selectionColor="#E91446" style={styles.numberInput}
-                    />
-                    <Text style={styles.separator}>:</Text>
-                    <TextInput
-                      accessibilityLabel="Minuto" value={minute}
-                      onChangeText={(text) => setMinute(text.replace(/\D/g, ''))}
-                      keyboardType="number-pad" maxLength={2}
-                      selectionColor="#E91446" style={styles.numberInput}
-                    />
+                  <View style={styles.dateAndTime}>
+                    <View style={styles.fieldGroup}>
+                      <Text style={styles.label}>Dia e mês</Text>
+                      <View style={styles.inputRow}>
+                        <TextInput
+                          accessibilityLabel="Dia" value={day}
+                          onChangeText={(text) => setDay(text.replace(/\D/g, ''))}
+                          keyboardType="number-pad" maxLength={2}
+                          selectionColor="#E91446" style={styles.numberInput}
+                        />
+                        <Text style={styles.separator}>/</Text>
+                        <TextInput
+                          accessibilityLabel="Mês" value={month}
+                          onChangeText={(text) => setMonth(text.replace(/\D/g, ''))}
+                          keyboardType="number-pad" maxLength={2}
+                          selectionColor="#E91446" style={styles.numberInput}
+                        />
+                      </View>
+                    </View>
+
+                    <View style={styles.fieldGroup}>
+                      <Text style={styles.label}>Horário</Text>
+                      <View style={styles.inputRow}>
+                        <TextInput
+                          accessibilityLabel="Hora" value={hour}
+                          onChangeText={(text) => setHour(text.replace(/\D/g, ''))}
+                          keyboardType="number-pad" maxLength={2}
+                          selectionColor="#E91446" style={styles.numberInput}
+                        />
+                        <Text style={styles.separator}>:</Text>
+                        <TextInput
+                          accessibilityLabel="Minuto" value={minute}
+                          onChangeText={(text) => setMinute(text.replace(/\D/g, ''))}
+                          keyboardType="number-pad" maxLength={2}
+                          selectionColor="#E91446" style={styles.numberInput}
+                        />
+                      </View>
+                    </View>
                   </View>
+
+                  <View style={styles.descriptionHeader}>
+                    <Text style={styles.label}>Descrição</Text>
+                    <Text style={styles.limit}>Max 100 caracteres</Text>
+                  </View>
+                  <TextInput
+                    accessibilityLabel="Descrição da partida"
+                    accessibilityHint="Máximo de 100 caracteres"
+                    value={description}
+                    onChangeText={setDescription}
+                    multiline
+                    maxLength={100}
+                    selectionColor="#E91446"
+                    style={styles.descriptionInput}
+                  />
+                </View>
+
+                <View style={styles.footer}>
+                  {showFeedback && (
+                    <Text style={styles.feedback} accessibilityLiveRegion="polite">
+                      Demonstração: nenhum agendamento foi salvo.
+                    </Text>
+                  )}
+                  <Pressable
+                    onPress={handleSchedule}
+                    accessibilityRole="button"
+                    accessibilityLabel="Agendar"
+                    accessibilityHint="Simulação local, sem salvar um agendamento"
+                    style={({ pressed }) => [styles.button, pressed && styles.pressed]}>
+                    <Text style={styles.buttonLabel}>Agendar</Text>
+                  </Pressable>
                 </View>
               </View>
-
-              <View style={styles.descriptionHeader}>
-                <Text style={styles.label}>Descrição</Text>
-                <Text style={styles.limit}>Max 100 caracteres</Text>
-              </View>
-              <TextInput
-                accessibilityLabel="Descrição da partida"
-                accessibilityHint="Máximo de 100 caracteres"
-                value={description}
-                onChangeText={setDescription}
-                multiline
-                maxLength={100}
-                selectionColor="#E91446"
-                style={styles.descriptionInput}
-              />
-            </View>
-
-            <View style={styles.footer}>
-              {showFeedback && (
-                <Text style={styles.feedback} accessibilityLiveRegion="polite">
-                  Demonstração: nenhum agendamento foi salvo.
-                </Text>
-              )}
-              <Pressable
-                onPress={handleSchedule}
-                accessibilityRole="button"
-                accessibilityLabel="Agendar"
-                accessibilityHint="Simulação local, sem salvar um agendamento"
-                style={({ pressed }) => [styles.button, pressed && styles.pressed]}>
-                <Text style={styles.buttonLabel}>Agendar</Text>
-              </Pressable>
-            </View>
+            </TouchableWithoutFeedback>
           </ScrollView>
         </View>
       </SafeAreaView>
@@ -172,6 +183,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, width: '100%', maxWidth: 600, alignSelf: 'center' },
   scroll: { flex: 1 },
   scrollContent: { flexGrow: 1, paddingTop: 24, paddingBottom: 24 },
+  formContent: { flexGrow: 1 },
   label: { fontFamily: 'RajdhaniBold', fontSize: 18, lineHeight: 24, color: '#DDE3F0' },
   categoryLabel: { marginHorizontal: 24, marginBottom: 12 },
   categoryScroll: { flexGrow: 0, flexShrink: 0 },
