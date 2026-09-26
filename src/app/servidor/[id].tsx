@@ -14,30 +14,38 @@ export function generateStaticParams() {
 }
 
 export default function ServerDetailsScreen() {
+  // A rota recebe somente o ID. find devolve o registro correspondente ou undefined.
+  // O tipo admite parâmetro ausente/repetido; sem correspondência exibimos o aviso abaixo.
   const { id } = useLocalSearchParams<{ id?: string | string[] }>();
   const server = servers.find((item) => item.id === id);
+  // Ligamos a mensagem ao ID para não exibir feedback de outro servidor ao mudar a rota.
   const [feedback, setFeedback] = useState<{ serverId: string; message: string } | null>(null);
 
   function handleBack() {
+    // back retira a tela atual da pilha. Sem histórico (link direto), replace abre Home.
     if (router.canGoBack()) router.back();
     else router.replace('/home');
   }
 
   function handleJoin() {
+    // Guarda apenas uma mensagem de demonstração: não entra em uma partida real.
     if (!server) return;
     setFeedback({ serverId: server.id, message: 'Entrada simulada. Nenhuma conexão com o Discord foi realizada.' });
   }
 
   async function handleShare() {
+    // async/await aguarda a API de compartilhamento do sistema. Não cria convite Discord.
     if (!server) return;
     try {
       await Share.share({ message: `${server.name}\n${server.description}` });
     } catch (error) {
+      // Cancelamento não é tratado como falha; outros erros geram um aviso local.
       if (error instanceof Error && error.name === 'AbortError') return;
       setFeedback({ serverId: server.id, message: 'Compartilhamento indisponível neste dispositivo.' });
     }
   }
 
+  // Retorno antecipado evita acessar propriedades de um servidor inexistente.
   if (!server) {
     return (
       <SafeAreaView style={styles.screen}>
@@ -51,6 +59,8 @@ export default function ServerDetailsScreen() {
     <SafeAreaView style={styles.screen}>
       <View style={styles.container}>
         <ScreenHeader title="Detalhes" onBack={handleBack} onShare={handleShare} />
+        {/* O banner é o cabeçalho da lista; jogadores são itens com IDs próprios.
+            PlayerItem recebe cada jogador por prop, sem conhecer a navegação. */}
         <FlatList
           style={styles.list}
           data={server.players}
@@ -76,6 +86,8 @@ export default function ServerDetailsScreen() {
           ListEmptyComponent={<Text style={styles.notFound}>Nenhum jogador neste servidor.</Text>}
         />
         <View style={styles.footer}>
+          {/* && renderiza a mensagem somente quando pertence ao servidor atual.
+              ?. permite verificar feedback mesmo quando seu valor é null. */}
           {feedback?.serverId === server.id && (
             <Text style={styles.feedback} accessibilityLiveRegion="polite">{feedback.message}</Text>
           )}
@@ -95,6 +107,8 @@ export default function ServerDetailsScreen() {
   );
 }
 
+// A lista usa flex: 1 e ocupa o espaço entre cabeçalho e rodapé.
+// absoluteFill cobre o banner com a imagem; o fundo translúcido ajuda a ler os textos.
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: '#0D133D' },
   container: { flex: 1, width: '100%', maxWidth: 600, alignSelf: 'center' },

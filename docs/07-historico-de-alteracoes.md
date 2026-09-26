@@ -142,7 +142,28 @@ Código alterado nesta revisão: `src/app/home.tsx`, `src/app/agendar.tsx` e `sr
 - Documentação atualizada e explicação em [Seleção de servidor](./13-selecao-de-servidor.md).
 - TypeScript e exportação Android/iOS/web passaram; ESLint não configurado e testes por toque pendentes.
 
-## Pendências atuais
+## 24/09/2026 — Comentários para a apresentação
+
+- Documentados no próprio código os 13 arquivos das quatro telas, layout raiz, seis componentes e dois arquivos de dados.
+- Comentários explicam responsabilidades, tipos, props, callbacks, estado, JSX, listas, navegação, teclado e estilos.
+- Adicionada ordem de leitura ao [Guia para apresentação](./04-guia-de-apresentacao.md).
+- Nenhuma lógica, aparência ou dependência foi alterada nesta etapa. TypeScript passou; o JavaScript gerado sem comentários permaneceu idêntico nos 13 arquivos.
+
+## 25/09/2026 — Apostila completa em PDF
+
+- Criado [GrupoGame-guia-completo.pdf](../output/pdf/GrupoGame-guia-completo.pdf), com capítulos de arquitetura, React Native, Expo, TypeScript, telas, estado, navegação, teclado, acessibilidade e roteiro de apresentação.
+- O apêndice transcreve os arquivos principais e as configurações `package.json`, `tsconfig.json` e `app.json`, com numeração de linhas para consulta.
+- A apostila inclui imagens das referências, diagramas de arquitetura e fluxo, perguntas e exercícios.
+- A revisão visual renderizou as 82 páginas e encontrou zero texto fora da página ou página sem texto extraível. O manifesto de hashes está em `output/pdf/fontes-da-apostila.json`.
+
+## 25/09/2026 — Correção da exportação no Windows
+
+- Identificado que a exportação padrão falhava no passo final do Hermes com `hermesc.exe: permission denied`.
+- Confirmado que TypeScript e exportação web já passavam; não era erro do código das telas.
+- Reexecutada a exportação completa com `npx.cmd expo export --platform all --no-bytecode`, gerando Android, iOS, web e 13 rotas estáticas.
+- Nenhuma dependência, configuração ou lógica do aplicativo foi alterada. A opção desativa bytecode somente na verificação local.
+
+## Pendências de teste
 
 - Realizar a conferência visual e os testes de toque nas quatro telas.
 - Conferir o teclado e a rolagem de Agendar em Android e iOS, incluindo telas pequenas e texto ampliado.

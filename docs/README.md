@@ -2,6 +2,10 @@
 
 Documentação do trabalho acadêmico em React Native, Expo e TypeScript. Este conjunto registra a análise inicial, o plano aprovado e as etapas de Login, Home, Detalhes do servidor e Agendar. As explicações descrevem o estado atual; mudanças anteriores ficam identificadas como histórico.
 
+Para estudar e apresentar o projeto, consulte a [apostila completa em PDF](../output/pdf/GrupoGame-guia-completo.pdf). Ela reúne arquitetura, decisões, conceitos, fluxo das telas, perguntas para a banca e o código principal comentado.
+
+Se precisar gerar o PDF novamente, siga as instruções em [docs/pdf/README.md](./pdf/README.md). O arquivo final não depende do ambiente Python para ser aberto.
+
 ## Por onde começar
 
 1. [Análise do projeto](./01-analise-do-projeto.md): estrutura, tecnologias, código inicial e referências visuais.
@@ -33,6 +37,7 @@ Documentação do trabalho acadêmico em React Native, Expo e TypeScript. Este c
 | Modal da lista de servidores | Implementado por solicitação posterior, com seis grupos locais e retorno da escolha ao formulário |
 | Modal de saída | Implementado após a revisão, por solicitação adicional; abre ao tocar no avatar da Home |
 | Revisão técnica das quatro telas | Concluída; navegação repetida e marcador de categoria ajustados; interação em aparelho pendente |
+| Exportação Android/iOS/web | Passou com `--no-bytecode` por bloqueio de permissão do `hermesc.exe` no Windows |
 
 Ao tocar em **Entrar com Discord**, o código substitui o Login pela Home. Os cartões abrem `/servidor/[id]`, passando somente o identificador do servidor. Detalhes permite voltar e simular a entrada na partida; compartilhar abre a opção do sistema quando disponível. O botão `+` abre `/agendar`, inicialmente sem servidor escolhido. Tocar no seletor abaixo das categorias abre a lista de grupos. Agendar mantém a seleção e os campos apenas no estado da tela e não salva partidas.
 

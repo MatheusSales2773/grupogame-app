@@ -23,23 +23,31 @@ import { categories, type CategoryId } from '@/data/home';
 import { servers } from '@/data/servers';
 
 export default function ScheduleScreen() {
+  // Um único ID garante seleção de apenas uma categoria; null é o estado inicial vazio.
+  // useState mantém o valor entre renderizações e seu setter atualiza a interface.
   const [selectedCategoryId, setSelectedCategoryId] = useState<CategoryId | null>(null);
+  // A escolha do servidor e a abertura da lista são estados independentes.
   const [selectedServerId, setSelectedServerId] = useState<string | null>(null);
   const [showServerSelect, setShowServerSelect] = useState(false);
+  // Derivamos o objeto pelo ID, sem duplicar nome, jogo e imagem em outros estados.
   const selectedServer = servers.find((server) => server.id === selectedServerId);
+  // TextInput trabalha com strings: permitem vazio e zeros à esquerda, como "06".
   const [day, setDay] = useState('');
   const [month, setMonth] = useState('');
   const [hour, setHour] = useState('');
   const [minute, setMinute] = useState('');
   const [description, setDescription] = useState('');
+  // Controla apenas a mensagem de demonstração do botão Agendar.
   const [showFeedback, setShowFeedback] = useState(false);
 
   function handleBack() {
+    // Retira a tela da pilha; se veio por link direto sem histórico, substitui por Home.
     if (router.canGoBack()) router.back();
     else router.replace('/home');
   }
 
   function fecharTeclado() {
+    // Remove o foco/fecha o teclado, mas não limpa os estados dos campos.
     Keyboard.dismiss();
   }
 
@@ -50,15 +58,20 @@ export default function ScheduleScreen() {
   }
 
   function handleOpenServers() {
+    // A lista aparece sobre o formulário; os campos continuam montados e preservados.
     fecharTeclado();
     setShowServerSelect(true);
   }
 
   function handleSelectServer(serverId: string) {
+    // Callback recebido pelo modal: guarda o ID escolhido e fecha a lista.
     setSelectedServerId(serverId);
     setShowServerSelect(false);
   }
 
+  // padding ajusta o espaço inferior quando o teclado sobrepõe a tela nativa.
+  // A ScrollView permite alcançar o conteúdo quando a área disponível diminui.
+  // Na web, o navegador controla o viewport; o KeyboardAvoidingView fica desativado.
   return (
     <KeyboardAvoidingView
       style={styles.screen}
@@ -68,6 +81,8 @@ export default function ScheduleScreen() {
         <View style={styles.container}>
           <ScreenHeader title="Agendar partida" onBack={handleBack} />
 
+          {/* handled permite tocar nos botões com teclado aberto; arrastar a rolagem
+              também pode dispensá-lo. O comportamento interactive é usado no iOS. */}
           <ScrollView
             style={styles.scroll}
             contentContainerStyle={styles.scrollContent}
@@ -85,6 +100,9 @@ export default function ScheduleScreen() {
                   showsHorizontalScrollIndicator={false}
                   keyboardShouldPersistTaps="handled"
                   contentContainerStyle={styles.categories}>
+                  {/* map transforma o array pequeno em cartões; key identifica cada um.
+                      A tela calcula selected e passa um callback. Trocar o ID faz a
+                      categoria anterior perder o destaque, sem quatro booleanos. */}
                   {categories.map((category) => (
                     <CategoryCard
                       key={category.id}
@@ -99,6 +117,8 @@ export default function ScheduleScreen() {
                 </ScrollView>
 
                 <View style={styles.form}>
+                  {/* Renderização condicional: sem escolha há um espaço para a imagem.
+                      ?. acessa o nome se existir servidor; ?? fornece o texto inicial. */}
                   <Pressable onPress={handleOpenServers} accessibilityRole="button"
                     accessibilityLabel={selectedServer ? `Servidor: ${selectedServer.name}, ${selectedServer.game}` : 'Selecione um servidor'}
                     accessibilityHint="Abre a lista para escolher ou trocar o servidor"
@@ -118,6 +138,10 @@ export default function ScheduleScreen() {
                     <View style={styles.fieldGroup}>
                       <Text style={styles.label}>Dia e mês</Text>
                       <View style={styles.inputRow}>
+                        {/* Campo controlado: value lê o estado e onChangeText o atualiza.
+                            A expressão regular remove tudo que não é dígito. O teclado
+                            numérico facilita digitar; maxLength limita a dois caracteres.
+                            Isso não valida se a data ou o horário realmente existem. */}
                         <TextInput
                           accessibilityLabel="Dia" value={day}
                           onChangeText={(text) => setDay(text.replace(/\D/g, ''))}
@@ -158,6 +182,8 @@ export default function ScheduleScreen() {
                     <Text style={styles.label}>Descrição</Text>
                     <Text style={styles.limit}>Max 100 caracteres</Text>
                   </View>
+                  {/* multiline permite várias linhas; maxLength limita a 100 caracteres.
+                      setDescription pode ser passado diretamente porque recebe o texto. */}
                   <TextInput
                     accessibilityLabel="Descrição da partida"
                     accessibilityHint="Máximo de 100 caracteres"
@@ -171,6 +197,7 @@ export default function ScheduleScreen() {
                 </View>
 
                 <View style={styles.footer}>
+                  {/* && só inclui a mensagem no JSX depois do toque em Agendar. */}
                   {showFeedback && (
                     <Text style={styles.feedback} accessibilityLiveRegion="polite">
                       Demonstração: nenhum agendamento foi salvo.
@@ -190,25 +217,30 @@ export default function ScheduleScreen() {
           </ScrollView>
         </View>
       </SafeAreaView>
+      {/* O modal recebe props, sem criar outra rota. Fechar não redefine os campos. */}
       <ServerSelectModal visible={showServerSelect} selectedServerId={selectedServerId}
         onSelect={handleSelectServer} onClose={() => setShowServerSelect(false)} />
     </KeyboardAvoidingView>
   );
 }
 
+// StyleSheet centraliza a aparência; os valores de estado decidem o conteúdo exibido.
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: '#0D133D' },
   safeArea: { flex: 1 },
   container: { flex: 1, width: '100%', maxWidth: 600, alignSelf: 'center' },
   scroll: { flex: 1 },
+  // Preenche a altura livre, mas deixa o conteúdo crescer para permitir rolagem.
   scrollContent: { flexGrow: 1, paddingTop: 24, paddingBottom: 24 },
   formContent: { flexGrow: 1 },
   label: { fontFamily: 'RajdhaniBold', fontSize: 18, lineHeight: 24, color: '#DDE3F0' },
   categoryLabel: { marginHorizontal: 24, marginBottom: 12 },
+  // A faixa horizontal não deve esticar nem encolher na direção vertical.
   categoryScroll: { flexGrow: 0, flexShrink: 0 },
   categories: { paddingHorizontal: 24, gap: 8 },
   form: { paddingHorizontal: 24, marginTop: 28 },
   server: {
+    // row alinha imagem, texto e seta. overflow recorta a imagem nos cantos arredondados.
     flexDirection: 'row', alignItems: 'center', minHeight: 68,
     borderWidth: 1, borderColor: '#243189', borderRadius: 8, overflow: 'hidden',
   },
@@ -218,6 +250,7 @@ const styles = StyleSheet.create({
   serverGame: { fontFamily: 'Inter', fontSize: 13, lineHeight: 20, color: '#ABB1CC' },
   serverChevron: { marginRight: 16 },
   dateAndTime: {
+    // Os grupos ficam lado a lado; wrap permite quebrar em telas estreitas.
     flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between',
     gap: 20, marginTop: 28,
   },
@@ -239,6 +272,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter', fontSize: 14, lineHeight: 22, color: '#DDE3F0',
     borderRadius: 8, borderWidth: 1, borderColor: '#243189', backgroundColor: '#1B245F',
   },
+  // Empurra o botão para baixo quando há espaço; ele continua dentro da rolagem.
   footer: { marginTop: 'auto', paddingTop: 40, paddingHorizontal: 24, gap: 12 },
   button: { minHeight: 56, justifyContent: 'center', alignItems: 'center', borderRadius: 8, backgroundColor: '#E91446' },
   buttonLabel: { padding: 16, fontFamily: 'Inter', fontSize: 14, lineHeight: 20, color: '#FFFFFF' },

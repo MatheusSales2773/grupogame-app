@@ -1,5 +1,7 @@
 import type { ImageSource } from 'expo-image';
 
+// Contrato dos dados de um jogador. avatar? é opcional: sem foto mostramos iniciais.
+// status é uma união de valores permitidos, sem presença online real.
 export type Player = {
   id: string;
   name: string;
@@ -8,6 +10,9 @@ export type Player = {
   status: 'available' | 'busy';
 };
 
+// Registro compartilhado por Detalhes e pelo seletor de Agendar.
+// image é a miniatura; banner é a imagem grande de Detalhes; game é o nome do jogo.
+// isAdmin indica papel fictício no grupo, diferente de isHost (anfitrião da partida).
 export type Server = {
   id: string;
   name: string;
@@ -29,6 +34,8 @@ const players: Player[] = [
   { id: 'diego', name: 'Diego Fernandes', initials: 'DF', status: 'busy' },
 ];
 
+// IDs únicos ligam a rota, a seleção em Agendar e os cards da Home.
+// Estes registros são constantes locais: as telas consultam com find e não os salvam.
 export const servers: Server[] = [
   {
     id: 'lendarios', name: 'Lendários',

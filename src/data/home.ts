@@ -1,14 +1,19 @@
 import type { ImageSource } from 'expo-image';
 
+// União de strings: TypeScript aceita somente estes quatro IDs de categoria.
+// Tipos ajudam a encontrar erros durante o desenvolvimento; não são dados de uma API.
 export type CategoryId = 'ranked' | 'duel' | 'fun' | 'training';
 
 export type Category = {
   id: CategoryId;
   title: string;
   matchLabel: string;
+  // Aceita uma fonte de imagem do Expo ou o identificador de um asset local via require.
   icon: ImageSource | number;
 };
 
+// id identifica a partida na lista; serverId liga a partida aos dados de servers.ts.
+// categoryId permite filtrar e localizar o rótulo da categoria sem duplicá-lo.
 export type Appointment = {
   id: string;
   serverId: string;
@@ -20,12 +25,15 @@ export type Appointment = {
   image: ImageSource | number;
 };
 
+// Perfil fictício usado na saudação. Não existe sessão autenticada neste projeto.
 export const user = {
   name: 'Tiago',
   message: 'Hoje é dia de vitória',
   avatar: require('@/assets/images/home/avatar.png'),
 };
 
+// Array compartilhado entre Home e Agendar. [] no tipo significa lista de Category.
+// export permite importar os mesmos dados em vários componentes.
 export const categories: Category[] = [
   { id: 'ranked', title: 'Ranqueada', matchLabel: 'Ranqueada', icon: require('@/assets/images/home/ranked.svg') },
   { id: 'duel', title: 'Duelo 1x1', matchLabel: '1x1', icon: require('@/assets/images/home/duel.svg') },

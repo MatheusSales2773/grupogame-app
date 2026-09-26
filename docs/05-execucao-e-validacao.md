@@ -178,7 +178,28 @@ Ao realizar os testes, registrar plataforma, tamanho de tela, resultado e qualqu
 - A exportação mostrou apenas aviso de conflito entre `NO_COLOR` e `FORCE_COLOR` do ambiente.
 - Não foram realizados testes por toque em aparelho nesta etapa. A compilação não comprova a interação do modal ou sua fidelidade visual. Roteiro em [Seleção de servidor](./13-selecao-de-servidor.md).
 
-## Próximas validações
+## 25/09/2026 — Erro de exportação Hermes no Windows
+
+A exportação completa padrão chegou ao fim do bundle, mas falhou ao tentar executar `node_modules/hermes-compiler/hermesc/win64-bin/hermesc.exe` com `permission denied`. Isso é uma restrição de execução do ambiente Windows, não um erro TypeScript ou de uma tela do projeto.
+
+Para validar os bundles sem depender desse executável, foi usada a opção oficial da CLI do Expo:
+
+```powershell
+npx.cmd expo export --platform all --no-bytecode --output-dir "$env:TEMP\grupogame-export-check"
+```
+
+Essa exportação passou para Android, iOS e web e gerou 13 rotas estáticas. `--no-bytecode` desativa somente a geração do bytecode Hermes nesta verificação; não foi alterado `app.json`, `package.json` ou o código da aplicação. A CLI informa que bytecode melhora o início do app, portanto essa opção é um contorno de diagnóstico para este ambiente, não uma recomendação de configuração de produção.
+
+As mensagens repetidas sobre `NO_COLOR` e `FORCE_COLOR` são avisos do ambiente. Não foram encontradas mensagens de TypeScript ou imports quebrados. ESLint continua sem configuração por decisão do projeto.
+
+## 24/09/2026 — Documentação no código
+
+- `npx.cmd tsc --noEmit --incremental false --noUnusedLocals --noUnusedParameters` passou após os comentários.
+- Comparados os hashes do JavaScript gerado por `typescript.transpileModule`, com `removeComments: true`, antes e depois desta etapa: os 13 arquivos produziram saídas idênticas. A verificação confirma que os comentários não alteraram o código executável gerado.
+- `npx.cmd expo lint` foi tentado; permanece indisponível sem configuração. Não foi aceita a instalação/configuração, conforme solicitado.
+- Não foi repetida a exportação nem feito novo teste de interface, pois a etapa alterou somente comentários e documentação.
+
+## Próximas verificações
 
 Repetir verificações relevantes quando houver alterações funcionais. Configurar ESLint somente quando essa etapa for solicitada: o comando `expo lint` pode tentar instalar dependências e criar configuração quando ela não existe.
 

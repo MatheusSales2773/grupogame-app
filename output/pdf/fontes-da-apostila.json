@@ -1,0 +1,271 @@
+{
+  "date": "2026-09-24",
+  "sources": [
+    {
+      "path": "src/app/_layout.tsx",
+      "sha256": "9fc0b02fddbc5ab2d9a9119bcd80f2c9d7b8346303361ff70fd6c0e3198aae5b",
+      "lines": 48
+    },
+    {
+      "path": "src/app/index.tsx",
+      "sha256": "ab51cb827cca4bebc730433014c9838e84898625945cfe43267e6125c4c695bd",
+      "lines": 147
+    },
+    {
+      "path": "src/app/home.tsx",
+      "sha256": "638bdd3b01107a8edafaccab254cf72550730a1d088ba775b8de026c67b23a6e",
+      "lines": 216
+    },
+    {
+      "path": "src/app/servidor/[id].tsx",
+      "sha256": "4e079c35ee0a7b812217f9c969e5540e95b91ab0cab9618507592ff5dd1a3f63",
+      "lines": 140
+    },
+    {
+      "path": "src/app/agendar.tsx",
+      "sha256": "fcfde3635ee4b475908b0933d87b29ac772df4dd70560fab2d8d3ddafe9a105f",
+      "lines": 281
+    },
+    {
+      "path": "src/components/category-card.tsx",
+      "sha256": "fa825679d04fbb710cc4cc79f06613d92e1c725d0d8456ec974aa68e8160e6c7",
+      "lines": 108
+    },
+    {
+      "path": "src/components/appointment-card.tsx",
+      "sha256": "89dc8f4738bd66c3eed8af0489db5647a4d357290eb2d32368e98d545f6ddece",
+      "lines": 143
+    },
+    {
+      "path": "src/components/screen-header.tsx",
+      "sha256": "a5a3c2a0d3279acbff5e2fd7ff88e3c4242cdb59fd355d4f5a1c0be675a91678",
+      "lines": 47
+    },
+    {
+      "path": "src/components/player-item.tsx",
+      "sha256": "76f5009f846c79393b8a4820bc122bfaec92b060b13ef42d07a398ead62fdb05",
+      "lines": 52
+    },
+    {
+      "path": "src/components/server-select-modal.tsx",
+      "sha256": "d0d9a73a927d188c7470d04c19b241af6b979da67cf0c4b50a08205f73f79822",
+      "lines": 88
+    },
+    {
+      "path": "src/components/sign-out-modal.tsx",
+      "sha256": "319e4919ac8b2011d62d8ba931556584ebf563338e7f9ba31c9cee3868937b0d",
+      "lines": 69
+    },
+    {
+      "path": "src/data/home.ts",
+      "sha256": "891419ab831a30857b5b2936b64bb77ff5bf7cb5152a1bf0fbdf982bd2342d8f",
+      "lines": 77
+    },
+    {
+      "path": "src/data/servers.ts",
+      "sha256": "8a92268ec63b8e88bbe11497cb506c85c23b46e25fdf625f9cb8b85d187bad78",
+      "lines": 76
+    },
+    {
+      "path": "package.json",
+      "sha256": "a882bec31bdcaac29b1bd3fe444a3cddc381a37edf21f20d4394e384b3213bb0",
+      "lines": 43
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "2c427a7bc50569dc5167d39425793d8bba22eeffcb213fff05f6274980784508",
+      "lines": 20
+    },
+    {
+      "path": "app.json",
+      "sha256": "a032aa26c7f4ef613fa739c3cb7db5f18a5676b283f7f23230c58dbead600c05",
+      "lines": 42
+    }
+  ],
+  "chapters": [
+    {
+      "title": "01. Como estudar este projeto",
+      "page": 4
+    },
+    {
+      "title": "02. Problema, requisitos e escopo",
+      "page": 5
+    },
+    {
+      "title": "03. Referências visuais e leitura das telas",
+      "page": 6
+    },
+    {
+      "title": "04. Tecnologias e o papel de cada uma",
+      "page": 9
+    },
+    {
+      "title": "05. Arquitetura: visão geral",
+      "page": 10
+    },
+    {
+      "title": "06. Pastas, arquivos e decisões de organização",
+      "page": 11
+    },
+    {
+      "title": "07. Configuração e execução",
+      "page": 13
+    },
+    {
+      "title": "08. React, componentes e JSX",
+      "page": 14
+    },
+    {
+      "title": "09. TypeScript e sintaxe que aparece no código",
+      "page": 16
+    },
+    {
+      "title": "10. Props, callbacks, estado e dados derivados",
+      "page": 18
+    },
+    {
+      "title": "11. Dados simulados e relações entre IDs",
+      "page": 20
+    },
+    {
+      "title": "12. Navegação: rotas, pilha e parâmetros",
+      "page": 21
+    },
+    {
+      "title": "13. Inicialização, fontes e tela de Login",
+      "page": 23
+    },
+    {
+      "title": "14. Home: listas, filtro e composição",
+      "page": 24
+    },
+    {
+      "title": "15. Componentes reutilizáveis e suas props",
+      "page": 25
+    },
+    {
+      "title": "16. Detalhes do servidor",
+      "page": 26
+    },
+    {
+      "title": "17. Agendar: uma tela, vários estados",
+      "page": 27
+    },
+    {
+      "title": "18. TextInput e formulário controlado",
+      "page": 28
+    },
+    {
+      "title": "19. Teclado e rolagem: o exemplo.js aplicado",
+      "page": 29
+    },
+    {
+      "title": "20. Seleção de servidor: tela cinco",
+      "page": 31
+    },
+    {
+      "title": "21. Confirmação de saída",
+      "page": 32
+    },
+    {
+      "title": "22. StyleSheet, Flexbox e adaptação de layout",
+      "page": 33
+    },
+    {
+      "title": "23. Acessibilidade, assets e cuidados de interface",
+      "page": 35
+    },
+    {
+      "title": "24. Decisões técnicas e alternativas",
+      "page": 36
+    },
+    {
+      "title": "25. Verificações, limites e demonstração manual",
+      "page": 38
+    },
+    {
+      "title": "26. Roteiro para explicar o projeto ao professor",
+      "page": 40
+    },
+    {
+      "title": "27. Perguntas que podem aparecer na banca",
+      "page": 42
+    },
+    {
+      "title": "28. Exercícios e respostas esperadas",
+      "page": 44
+    },
+    {
+      "title": "29. Glossário e mapa de consulta",
+      "page": 46
+    },
+    {
+      "title": "30. Referências e critérios de evidência",
+      "page": 48
+    },
+    {
+      "title": "A01. Inicialização, fontes e Stack",
+      "page": 49
+    },
+    {
+      "title": "A02. Tela de Login",
+      "page": 50
+    },
+    {
+      "title": "A03. Tela Home",
+      "page": 53
+    },
+    {
+      "title": "A04. Detalhes do servidor",
+      "page": 57
+    },
+    {
+      "title": "A05. Formulário Agendar",
+      "page": 60
+    },
+    {
+      "title": "A06. Cartão de categoria",
+      "page": 65
+    },
+    {
+      "title": "A07. Cartão de partida",
+      "page": 67
+    },
+    {
+      "title": "A08. Cabeçalho",
+      "page": 70
+    },
+    {
+      "title": "A09. Jogador",
+      "page": 71
+    },
+    {
+      "title": "A10. Seleção de servidor",
+      "page": 72
+    },
+    {
+      "title": "A11. Confirmação de saída",
+      "page": 74
+    },
+    {
+      "title": "A12. Dados de Home e categorias",
+      "page": 76
+    },
+    {
+      "title": "A13. Servidores e jogadores",
+      "page": 78
+    },
+    {
+      "title": "A14. Dependências e comandos",
+      "page": 80
+    },
+    {
+      "title": "A15. Configuração do TypeScript",
+      "page": 81
+    },
+    {
+      "title": "A16. Configuração do Expo",
+      "page": 82
+    }
+  ]
+}

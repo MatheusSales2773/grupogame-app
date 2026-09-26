@@ -10,19 +10,26 @@ import { SignOutModal } from '@/components/sign-out-modal';
 import { appointments, categories, user, type CategoryId } from '@/data/home';
 
 export default function HomeScreen() {
+  // useState guarda valores entre renderizações. O setter solicita a atualização da tela.
+  // Um único ID (ou null) representa o filtro; o booleano controla somente a saída.
   const [selectedCategoryId, setSelectedCategoryId] = useState<CategoryId | null>(null);
   const [showSignOut, setShowSignOut] = useState(false);
 
+  // Valor derivado: calculamos a lista a partir do filtro, sem outro estado duplicado.
+  // filter cria um novo array; não remove partidas dos dados locais originais.
   const visibleAppointments = selectedCategoryId
     ? appointments.filter((appointment) => appointment.categoryId === selectedCategoryId)
     : appointments;
 
   function handleSelectCategory(categoryId: CategoryId) {
     // Tocar novamente na mesma categoria remove o filtro.
+    // A forma funcional recebe o estado anterior para calcular o próximo.
     setSelectedCategoryId((current) => current === categoryId ? null : categoryId);
   }
 
   function handleOpenServer(serverId: string) {
+    // O card entrega só o ID. [id] é o trecho variável da URL; Detalhes busca os dados.
+    // navigate abre/reutiliza o destino na pilha, evitando empilhar o mesmo destino ativo.
     router.navigate({ pathname: '/servidor/[id]', params: { id: serverId } });
   }
 
@@ -34,6 +41,9 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.screen}>
+      {/* FlatList renderiza a lista por itens. data fornece os dados, renderItem monta
+          cada card e keyExtractor identifica os itens com chaves estáveis.
+          O cabeçalho acompanha a rolagem porque pertence à própria lista. */}
       <FlatList
         style={styles.list}
         contentContainerStyle={styles.listContent}
@@ -67,6 +77,9 @@ export default function HomeScreen() {
               </Pressable>
             </View>
 
+            {/* Lista horizontal independente da vertical. extraData informa que a
+                seleção mudou mesmo que o array categories continue sendo o mesmo.
+                Props levam dados ao card; o callback onPress devolve o toque à tela. */}
             <FlatList
               horizontal
               data={categories}
@@ -98,6 +111,7 @@ export default function HomeScreen() {
         )}
         ListEmptyComponent={<Text style={styles.empty}>Nenhuma partida nesta categoria.</Text>}
       />
+      {/* O modal recebe estado e callbacks da Home; cancelar preserva o filtro. */}
       <SignOutModal
         visible={showSignOut}
         onCancel={() => setShowSignOut(false)}
@@ -107,6 +121,8 @@ export default function HomeScreen() {
   );
 }
 
+// Largura máxima mantém a leitura em telas grandes; padding dá espaço interno.
+// Nos grupos em row, justifyContent distribui na horizontal e alignItems na vertical.
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -137,6 +153,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E91446',
   },
   avatarPressed: { opacity: 0.75 },
+  // A saudação ocupa o espaço restante entre o avatar e o botão +.
   greeting: { flex: 1, gap: 4 },
   greetingText: {
     fontFamily: 'Inter',
@@ -167,6 +184,7 @@ const styles = StyleSheet.create({
   },
   categories: { paddingHorizontal: 24, gap: 8 },
   sectionHeader: {
+    // wrap permite quebrar a linha se título e total não couberem lado a lado.
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',

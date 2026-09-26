@@ -1,6 +1,8 @@
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+// visible vem do estado da Home. Os callbacks dizem o que fazer ao cancelar/confirmar.
+// O modal não conhece o Router nem mantém uma segunda cópia desse estado.
 type Props = {
   visible: boolean;
   onCancel: () => void;
@@ -8,6 +10,8 @@ type Props = {
 };
 
 export function SignOutModal({ visible, onCancel, onConfirm }: Props) {
+  // transparent permite enxergar o fundo escurecido; fade anima a aparição.
+  // onRequestClose usa o mesmo cancelamento para o botão voltar do Android.
   return (
     <Modal
       visible={visible}
@@ -16,12 +20,15 @@ export function SignOutModal({ visible, onCancel, onConfirm }: Props) {
       statusBarTranslucent
       onRequestClose={onCancel}>
       <View style={styles.overlay}>
+        {/* absoluteFill cobre a área externa; tocar nela cancela sem sair da Home. */}
         <Pressable style={StyleSheet.absoluteFill} onPress={onCancel} accessible={false} />
         <SafeAreaView edges={['bottom', 'left', 'right']} style={styles.sheet}>
           <View style={styles.content} accessibilityViewIsModal>
             <Text style={styles.title} accessibilityRole="header">
               Deseja sair do Game<Text style={styles.highlight}>Play</Text>?
             </Text>
+            {/* onPress recebe a função: ela só roda após o toque. A Home decide
+                fechar o modal ou substituir a rota pelo Login. */}
             <View style={styles.actions}>
               <Pressable
                 onPress={onCancel}
@@ -45,6 +52,8 @@ export function SignOutModal({ visible, onCancel, onConfirm }: Props) {
   );
 }
 
+// O painel fica na base por flex-end. actions em row e os dois botões com flex: 1
+// dividem a largura igualmente; gap mantém o intervalo entre eles.
 const styles = StyleSheet.create({
   overlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.75)' },
   sheet: { width: '100%', maxWidth: 600, alignSelf: 'center', backgroundColor: '#0D133D' },

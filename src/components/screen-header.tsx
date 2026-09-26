@@ -1,6 +1,8 @@
 import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+// Cabeçalho reutilizado em Detalhes e Agendar. A tela fornece o título e as ações.
+// onShare é opcional: Agendar não passa essa função e não mostra compartilhar.
 type Props = {
   title: string;
   onBack: () => void;
@@ -8,6 +10,7 @@ type Props = {
 };
 
 export function ScreenHeader({ title, onBack, onShare }: Props) {
+  // O componente não decide a rota: apenas chama os callbacks recebidos por props.
   return (
     <View style={styles.header}>
       <Pressable onPress={onBack} accessibilityRole="button" accessibilityLabel="Voltar"
@@ -16,6 +19,8 @@ export function ScreenHeader({ title, onBack, onShare }: Props) {
           size={24} tintColor="#DDE3F0" />
       </Pressable>
       <Text style={styles.title} accessibilityRole="header">{title}</Text>
+      {/* Sem compartilhar, a View vazia reserva a largura do botão para centralizar
+          o título. SymbolView recebe nomes diferentes para os ícones de cada plataforma. */}
       {onShare ? (
         <Pressable onPress={onShare} accessibilityRole="button" accessibilityLabel="Compartilhar servidor"
           style={({ pressed }) => [styles.action, pressed && styles.pressed]}>
@@ -27,6 +32,7 @@ export function ScreenHeader({ title, onBack, onShare }: Props) {
   );
 }
 
+// Ações com 48 de largura nas pontas; o título ocupa o centro usando flex: 1.
 const styles = StyleSheet.create({
   header: {
     minHeight: 64, paddingHorizontal: 12, flexDirection: 'row',

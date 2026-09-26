@@ -3,18 +3,25 @@ import { router } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+// index.tsx corresponde à rota inicial (/). Um componente retorna a interface em JSX.
+// Esta tela não precisa de useState: não possui campos nem dados que mudem localmente.
 export default function LoginScreen() {
   function handleSignIn() {
     // Entrada simulada: não autentica nem acessa a conta do Discord.
+    // replace troca a rota atual: voltar da Home não retorna a este Login pela pilha.
     router.replace('/home');
   }
 
   return (
     <SafeAreaView style={styles.screen}>
+      {/* SafeAreaView respeita recortes/barras do aparelho; ScrollView permite
+          rolar em telas baixas. contentContainerStyle estiliza o conteúdo interno. */}
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
+          {/* require inclui o arquivo local no bundle. contain preserva a imagem inteira.
+              accessible=false evita anunciar uma ilustração apenas decorativa. */}
           <Image
             source={require('@/assets/images/login/illustration.png')}
             style={styles.illustration}
@@ -31,6 +38,9 @@ export default function LoginScreen() {
               Crie grupos para jogar seus games{'\n'}favoritos com seus amigos
             </Text>
 
+            {/* Passamos a função a onPress, sem executá-la durante a renderização.
+                pressed é fornecido pelo Pressable para o feedback visual do toque.
+                As props de acessibilidade descrevem a ação ao leitor de tela. */}
             <Pressable
               accessibilityRole="button"
               accessibilityLabel="Entrar com Discord"
@@ -54,6 +64,8 @@ export default function LoginScreen() {
   );
 }
 
+// StyleSheet organiza os estilos. Números representam unidades lógicas de layout.
+// flex: 1 ocupa o espaço disponível; flexGrow permite ao conteúdo crescer e rolar.
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -96,6 +108,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
+    // row coloca ícone e texto lado a lado; alignItems centraliza na vertical.
     alignSelf: 'stretch',
     flexDirection: 'row',
     alignItems: 'center',
@@ -121,6 +134,7 @@ const styles = StyleSheet.create({
     height: 18,
   },
   buttonLabel: {
+    // Ocupa o espaço restante depois do ícone, mantendo o texto centralizado.
     flex: 1,
     paddingHorizontal: 8,
     paddingVertical: 16,

@@ -3,13 +3,16 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import type { Player } from '@/data/servers';
 
+// Cada item recebe um jogador por prop; não consulta API nem altera presença real.
 type Props = { player: Player };
 
 export function PlayerItem({ player }: Props) {
+  // Um valor derivado controla o texto e a cor de status, sem useState extra.
   const available = player.status === 'available';
 
   return (
     <View style={styles.row}>
+      {/* O ternário escolhe foto quando disponível ou as iniciais como alternativa. */}
       {player.avatar ? (
         <Image source={player.avatar} style={styles.avatar} contentFit="cover" accessible={false} />
       ) : (
@@ -28,6 +31,9 @@ export function PlayerItem({ player }: Props) {
   );
 }
 
+// row organiza avatar/textos em linha; details cresce para ocupar o espaço restante.
+// A combinação de width/height iguais e borderRadius pela metade desenha o ponto.
+// hairlineWidth fornece uma borda fina adequada à densidade da tela.
 const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: 16, paddingLeft: 24 },
   avatar: {

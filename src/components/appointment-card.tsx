@@ -3,6 +3,8 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import type { Appointment } from '@/data/home';
 
+// O card recebe os dados da partida, o rótulo da categoria e uma ação opcional.
+// A assinatura do callback exige um ID de servidor e não retorna um valor (void).
 type AppointmentCardProps = {
   appointment: Appointment;
   categoryLabel: string;
@@ -10,11 +12,14 @@ type AppointmentCardProps = {
 };
 
 export function AppointmentCard({ appointment, categoryLabel, onPress }: AppointmentCardProps) {
+  // Valores calculados a partir das props: não precisam de estados independentes.
   const role = appointment.isHost ? 'Anfitrião' : 'Visitante';
   const roleColor = appointment.isHost ? '#E91446' : '#32BD50';
 
   return (
     <Pressable
+      // Sem callback, o card fica desabilitado. ?. chama a função somente se existir.
+      // A função anônima adia a chamada e entrega o ID à Home quando houver um toque.
       disabled={!onPress}
       onPress={() => onPress?.(appointment.serverId)}
       accessible
@@ -57,6 +62,8 @@ export function AppointmentCard({ appointment, categoryLabel, onPress }: Appoint
   );
 }
 
+// Card em linha: capa com tamanho fixo e details com flex: 1 para o espaço restante.
+// wrap acomoda metadados em outra linha; tintColor reaproveita o ícone com outra cor.
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',

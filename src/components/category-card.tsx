@@ -3,6 +3,8 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import type { Category } from '@/data/home';
 
+// Props são entradas recebidas da tela. O tipo define os dados e callbacks permitidos.
+// ? indica prop opcional; as opções visuais têm padrões que preservam a Home.
 type CategoryCardProps = {
   category: Category;
   selected: boolean;
@@ -12,6 +14,8 @@ type CategoryCardProps = {
   dimUnselected?: boolean;
 };
 
+// Componente controlado pela tela: não guarda seleção própria em useState.
+// Home usa o toque para filtrar; Agendar usa o mesmo cartão para escolher uma categoria.
 export function CategoryCard({
   category,
   selected,
@@ -27,11 +31,14 @@ export function CategoryCard({
       accessibilityLabel={category.title}
       accessibilityState={{ selected }}
       accessibilityHint={accessibilityHint}
+      // Estilos são combinados na ordem do array; os posteriores sobrescrevem os anteriores.
+      // && aplica cada estilo só quando sua condição é verdadeira.
       style={({ pressed }) => [
         styles.card,
         selected && styles.selected,
         showSelectionIndicator && selected && styles.selectedWithIndicator,
         pressed && styles.pressed,
+        // Por último para que o toque não clareie uma categoria ainda não selecionada.
         dimUnselected && !selected && styles.unselected,
       ]}>
       {showSelectionIndicator && (
@@ -43,6 +50,7 @@ export function CategoryCard({
   );
 }
 
+// O layout padrão da View é em coluna: ícone e título ficam um abaixo do outro.
 const styles = StyleSheet.create({
   card: {
     width: 104,
@@ -65,6 +73,7 @@ const styles = StyleSheet.create({
     borderColor: '#243189',
   },
   indicator: {
+    // Posicionamento absoluto prende o marcador ao canto sem deslocar ícone/texto.
     position: 'absolute',
     top: 8,
     right: 8,
@@ -82,6 +91,7 @@ const styles = StyleSheet.create({
     opacity: 0.75,
   },
   unselected: {
+    // Apaga o cartão inteiro visualmente; não desabilita seu onPress.
     opacity: 0.4,
   },
   icon: {

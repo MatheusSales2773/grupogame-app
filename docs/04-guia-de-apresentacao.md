@@ -18,7 +18,24 @@
 
 Antes de apresentar, executar o roteiro manual de [validação](./05-execucao-e-validacao.md). Não afirmar que houve teste em aparelho se essa etapa ainda não tiver sido feita.
 
-## Perguntas e respostas
+## Ordem de leitura do código comentado
+
+Os 13 arquivos abaixo receberam comentários em português sobre a implementação do trabalho. Leia primeiro o estado e as funções, depois o JSX e, por último, o `StyleSheet`. Os comentários explicam as decisões; não são instruções executadas pelo aplicativo. Arquivos antigos do template que não participam dessas telas foram preservados.
+
+| Ordem | Arquivos | O que você deve conseguir explicar |
+| --- | --- | --- |
+| 1 | [_layout.tsx](../src/app/_layout.tsx) | Fontes, `useEffect`, abertura do aplicativo e navegação em pilha |
+| 2 | [index.tsx](../src/app/index.tsx) | JSX, imagens locais, `onPress`, `replace`, área segura e Flexbox |
+| 3 | [data/home.ts](../src/data/home.ts) e [data/servers.ts](../src/data/servers.ts) | Tipos, arrays locais, IDs e relacionamento entre dados |
+| 4 | [home.tsx](../src/app/home.tsx) | `useState`, filtro, valores derivados, listas e navegação |
+| 5 | [category-card.tsx](../src/components/category-card.tsx) e [appointment-card.tsx](../src/components/appointment-card.tsx) | Props, callbacks, estilos condicionais e reutilização |
+| 6 | [servidor/[id].tsx](../src/app/servidor/[id].tsx), [screen-header.tsx](../src/components/screen-header.tsx) e [player-item.tsx](../src/components/player-item.tsx) | Parâmetro de rota, `find`, retorno, props opcionais e jogadores |
+| 7 | [agendar.tsx](../src/app/agendar.tsx) | Seleção única, inputs controlados, teclado e rolagem |
+| 8 | [server-select-modal.tsx](../src/components/server-select-modal.tsx) e [sign-out-modal.tsx](../src/components/sign-out-modal.tsx) | Modais controlados pela tela, seleção, cancelamento e confirmação |
+
+Para verificar se entendeu, siga uma ação inteira: toque na categoria → callback → setter → nova renderização → estilo atualizado. Faça o mesmo com a escolha do servidor. Identifique o que vem de props, o que está em estado e o que é calculado a partir deles.
+
+## Perguntas frequentes
 
 ### O que é um componente?
 
